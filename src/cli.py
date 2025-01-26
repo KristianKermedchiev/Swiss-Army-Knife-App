@@ -14,7 +14,7 @@ class TodoAppCLI(cmd.Cmd):
     def do_mkexpense(self, arg):
         """
         Create a new expense.
-        Usage: createexpense -description <description> -amount <amount>
+        Usage: mkexpense -description <description> -amount <amount>
         """
         try:
             args = shlex.split(arg)
@@ -31,7 +31,7 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: Both -description and -amount are required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: createexpense -description <description> -amount <amount>")
+            print("Error: Invalid arguments. Usage: mkexpense -description <description> -amount <amount>")
 
     def do_chexpense(self, arg):
         """
