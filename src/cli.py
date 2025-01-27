@@ -14,20 +14,23 @@ class TodoAppCLI(cmd.Cmd):
     def do_mkexpense(self, arg):
         """
         Create a new expense.
-        Usage: mkexpense -description <description> -amount <amount>
+        Usage: mkexpense -description <description> -amount <amount> -date <date> (optional)
         """
         try:
             args = shlex.split(arg)
             description = None
             amount = None
+            date = None
 
             if "-description" in args:
                 description = args[args.index("-description") + 1]
             if "-amount" in args:
                 amount = args[args.index("-amount") + 1]
+            if "-date" in args:
+                date = args[args.index("-date") + 1]
 
             if description and amount:
-                make_expense(description, amount)
+                make_expense(description, amount, date)
             else:
                 print("Error: Both -description and -amount are required.")
         except (ValueError, IndexError) as e:
@@ -36,7 +39,7 @@ class TodoAppCLI(cmd.Cmd):
     def do_chexpense(self, arg):
         """
         Modify an existing expense.
-        Usage: chexpense -id <id> [-description <description>] [-amount <amount>]
+        Usage: chexpense -id <id> [-description <description>] [-amount <amount>] [-date <date>] (optional)
         """
         try:
             # Parse arguments
@@ -44,6 +47,7 @@ class TodoAppCLI(cmd.Cmd):
             expense_id = None
             description = None
             amount = None
+            date = None
 
             if "-id" in args:
                 expense_id = int(args[args.index("-id") + 1])
@@ -51,9 +55,11 @@ class TodoAppCLI(cmd.Cmd):
                 description = args[args.index("-description") + 1]
             if "-amount" in args:
                 amount = float(args[args.index("-amount") + 1])
+            if "-date" in args:
+                date = args[args.index("-date") + 1]
 
             if expense_id is not None:
-                change_expense(expense_id=expense_id, description=description, amount=amount)
+                change_expense(expense_id=expense_id, description=description, amount=amount, date=date)
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:

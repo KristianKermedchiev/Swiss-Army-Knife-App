@@ -36,13 +36,14 @@ def list_expenses():
         print(f"{id} / {date} / {description} / {amount}")
 
 
-def make_expense(description=None, amount=None):
+def make_expense(description=None, amount=None, date=None):
     """Create a new expense."""
     if description is None or amount is None:
         print("Error: Both description and amount are required.")
         return
 
-    current_date = datetime.datetime.now().strftime('%Y-%m-%d')
+    if date is None:
+        date = datetime.datetime.now().strftime('%d/%m/%Y')
 
     expenses = load_data()
 
@@ -50,7 +51,7 @@ def make_expense(description=None, amount=None):
 
     expenses.append({
         'id': new_id,
-        'date': current_date,
+        'date': date,
         'description': description,
         'amount': amount
     })
@@ -60,7 +61,7 @@ def make_expense(description=None, amount=None):
     print(f"Expense '{description}' with amount {amount} added successfully with ID {new_id}.")
 
 
-def change_expense(expense_id=None, description=None, amount=None):
+def change_expense(expense_id=None, description=None, amount=None, date=None):
     """Modify an existing expense by ID."""
     if expense_id is None:
         print("Error: Expense ID is required.")
@@ -74,6 +75,8 @@ def change_expense(expense_id=None, description=None, amount=None):
                 expense["description"] = description
             if amount is not None:
                 expense["amount"] = amount
+            if date:
+                expense["date"] = date
 
             save_data(expenses)
 
