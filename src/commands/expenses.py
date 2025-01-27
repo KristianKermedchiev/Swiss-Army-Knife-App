@@ -2,21 +2,20 @@ import datetime
 import json
 import os
 
-
-DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data.json')
+EXPENSES_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data.json')
 
 
 def load_data():
     """Load expenses data from the JSON file."""
-    if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, 'r') as file:
+    if os.path.exists(EXPENSES_DATA_FILE):
+        with open(EXPENSES_DATA_FILE, 'r') as file:
             return json.load(file)
     return []
 
 
 def save_data(data):
     """Save expenses data to the JSON file."""
-    with open(DATA_FILE, 'w') as file:
+    with open(EXPENSES_DATA_FILE, 'w') as file:
         json.dump(data, file, indent=4)
 
 
