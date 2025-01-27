@@ -5,3 +5,5 @@ __pycache__/
 .env
 data.json
 .idea
+src/todo.md
+*.md

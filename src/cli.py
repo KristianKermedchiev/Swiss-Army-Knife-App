@@ -167,3 +167,8 @@ class TodoAppCLI(cmd.Cmd):
         """Exit the program."""
         print("Goodbye!")
         exit()
+
+
+
+#cmd Loop
+TodoAppCLI().cmdloop()
