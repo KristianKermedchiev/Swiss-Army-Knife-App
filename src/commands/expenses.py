@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 
-EXPENSES_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data.json')
+EXPENSES_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'expenses.json')
 
 
 def load_data():
