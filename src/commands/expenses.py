@@ -35,10 +35,10 @@ def list_expenses():
         print(f"{id} / {date} / {description} / {amount}")
 
 
-def make_expense(description=None, amount=None, date=None):
+def make_expense(description=None, amount=None, date=None, category=None):
     """Create a new expense."""
-    if description is None or amount is None:
-        print("Error: Both description and amount are required.")
+    if description is None or amount is None or category is None:
+        print("Error: Description, amount and category are required.")
         return
 
     if date is None:
@@ -52,12 +52,13 @@ def make_expense(description=None, amount=None, date=None):
         'id': new_id,
         'date': date,
         'description': description,
-        'amount': amount
+        'amount': amount,
+        'category': category
     })
 
     save_data(expenses)
 
-    print(f"Expense '{description}' with amount {amount} added successfully with ID {new_id}.")
+    print(f"Expense '{description}' with amount {amount} in category {category} was added successfully with ID {new_id}.")
 
 
 def change_expense(expense_id=None, description=None, amount=None, date=None):

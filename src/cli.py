@@ -17,13 +17,14 @@ class TodoAppCLI(cmd.Cmd):
     def do_mkexpense(self, arg):
         """
         Create a new expense.
-        Usage: mkexpense -description <description> -amount <amount> -date <date> (optional)
+        Usage: mkexpense -description <description> -amount <amount> -date <date> (optional in format %dd/%mm/%YYYY) -category <category>
         """
         try:
             args = shlex.split(arg)
             description = None
             amount = None
             date = None
+            category = None
 
             if "-description" in args:
                 description = args[args.index("-description") + 1]
@@ -31,9 +32,11 @@ class TodoAppCLI(cmd.Cmd):
                 amount = args[args.index("-amount") + 1]
             if "-date" in args:
                 date = args[args.index("-date") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
 
-            if description and amount:
-                make_expense(description, amount, date)
+            if description and amount and category:
+                make_expense(description, amount, date, category)
             else:
                 print("Error: Both -description and -amount are required.")
         except (ValueError, IndexError) as e:
