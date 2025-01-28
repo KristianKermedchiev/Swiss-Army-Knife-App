@@ -25,7 +25,7 @@ def list_todos():
         print("\nNo todos found.")
         return
 
-    print("\nList of Todos:")
+    print("\nList of todos:")
     for todo in todos:
         print(f"{todo['id']} / {todo['description']} / {todo['due_date']} / {todo['status']}")
 

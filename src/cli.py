@@ -2,6 +2,7 @@ import cmd
 import shlex
 from commands.expenses import make_expense, list_expenses, change_expense, delete_expense
 from commands.todos import make_todo, list_todos, change_todo, delete_todo
+from commands.bills import make_bill, list_bills, change_bill, delete_bill
 
 
 class TodoAppCLI(cmd.Cmd):
@@ -163,7 +164,76 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: deltodo -id <id>")
 
+    def do_lsbill(self, arg):
+        """List all bills."""
+        list_bills()
 
+    def do_mkbill(self, arg):
+        """
+        Create a new bill.
+        Usage: mkbill -description <description> -price <price>
+        """
+        try:
+            args = shlex.split(arg)
+            description = None
+            price = None
+
+            if "-description" in args:
+                description = args[args.index("-description") + 1]
+            if "-price" in args:
+                price = args[args.index("-price") + 1]
+
+            if description and price:
+                make_bill(description, price)
+            else:
+                print("Error: -description and -price are required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: mktodo -description <description> -price <price>")
+
+    def do_chbill(self, arg):
+        """
+        Modify an existing bill.
+        Usage: chbill -id <id> [-description <description>] [-price <price>]
+        """
+        try:
+            args = shlex.split(arg)
+            bill_id = None
+            description = None
+            price = None
+
+            if "-id" in args:
+                bill_id = int(args[args.index("-id") + 1])
+            if "-description" in args:
+                description = args[args.index("-description") + 1]
+            if "-price" in args:
+                price = args[args.index("-price") + 1]
+
+            if bill_id is not None:
+                change_bill(bill_id, description, price)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError) as e:
+            print(
+                "Error: Invalid arguments. Usage: chbill -id <id> [-description <description>] [-price <price>]")
+
+    def do_delbill(self, arg):
+        """
+        Delete a bill by ID.
+        Usage: delbill -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            bill_id = None
+
+            if "-id" in args:
+                bill_id = int(args[args.index("-id") + 1])
+
+            if bill_id is not None:
+                delete_bill(bill_id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: delbill -id <id>")
 
     def do_exit(self, arg):
         """Exit the program."""
