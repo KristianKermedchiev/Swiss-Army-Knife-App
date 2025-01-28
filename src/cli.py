@@ -8,11 +8,9 @@ class TodoAppCLI(cmd.Cmd):
     intro = "Welcome to your CLI To-Do App! Type 'help' or '?' to list commands."
     prompt = "(CLI) "
 
-
     def do_lsexpense(self, arg):
         """List all expenses."""
         list_expenses()
-
 
     def do_mkexpense(self, arg):
         """
@@ -166,11 +164,11 @@ class TodoAppCLI(cmd.Cmd):
             print("Error: Invalid arguments. Usage: deltodo -id <id>")
 
 
+
     def do_exit(self, arg):
         """Exit the program."""
         print("Goodbye!")
         exit()
-
 
 
 #cmd Loop

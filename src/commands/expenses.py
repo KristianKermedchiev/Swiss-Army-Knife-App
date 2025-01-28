@@ -5,7 +5,7 @@ import os
 EXPENSES_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'expenses.json')
 
 
-def load_data():
+def load_expenses():
     """Load expenses data from the JSON file."""
     if os.path.exists(EXPENSES_DATA_FILE):
         with open(EXPENSES_DATA_FILE, 'r') as file:
@@ -13,7 +13,7 @@ def load_data():
     return []
 
 
-def save_data(data):
+def save_expenses(data):
     """Save expenses data to the JSON file."""
     with open(EXPENSES_DATA_FILE, 'w') as file:
         json.dump(data, file, indent=4)
@@ -21,7 +21,7 @@ def save_data(data):
 
 def list_expenses():
     """List all expenses with date, description, and amount."""
-    expenses = load_data()
+    expenses = load_expenses()
     if not expenses:
         print("\nNo expenses found.")
         return
@@ -44,7 +44,7 @@ def make_expense(description=None, amount=None, date=None, category=None):
     if date is None:
         date = datetime.datetime.now().strftime('%d/%m/%Y')
 
-    expenses = load_data()
+    expenses = load_expenses()
 
     new_id = 1 if not expenses else expenses[-1]['id'] + 1
 
@@ -56,7 +56,7 @@ def make_expense(description=None, amount=None, date=None, category=None):
         'category': category
     })
 
-    save_data(expenses)
+    save_expenses(expenses)
 
     print(f"Expense '{description}' with amount {amount} in category {category} was added successfully with ID {new_id}.")
 
@@ -67,7 +67,7 @@ def change_expense(expense_id=None, description=None, amount=None, date=None):
         print("Error: Expense ID is required.")
         return
 
-    expenses = load_data()
+    expenses = load_expenses()
 
     for expense in expenses:
         if expense["id"] == expense_id:
@@ -78,7 +78,7 @@ def change_expense(expense_id=None, description=None, amount=None, date=None):
             if date:
                 expense["date"] = date
 
-            save_data(expenses)
+            save_expenses(expenses)
 
             print(f"Expense with ID {expense_id} updated successfully.")
             return
@@ -88,12 +88,12 @@ def change_expense(expense_id=None, description=None, amount=None, date=None):
 
 def delete_expense(expense_id):
     """Delete an expense by ID."""
-    expenses = load_data()
+    expenses = load_expenses()
 
     for expense in expenses:
         if expense["id"] == expense_id:
             expenses.remove(expense)
-            save_data(expenses)
+            save_expenses(expenses)
             print(f"Expense with ID {expense_id} deleted successfully.")
             return
 
