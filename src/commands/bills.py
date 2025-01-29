@@ -42,7 +42,6 @@ def make_bill(description, price):
 
     bills = load_bills()
 
-    # Generate a unique ID
     new_id = 1 if not bills else bills[-1]['id'] + 1
 
     bills.append({

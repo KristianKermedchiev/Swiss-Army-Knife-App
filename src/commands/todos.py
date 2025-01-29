@@ -41,7 +41,6 @@ def make_todo(description, due_date=None):
 
     todos = load_todos()
 
-    # Generate a unique ID
     new_id = 1 if not todos else todos[-1]['id'] + 1
 
     todos.append({

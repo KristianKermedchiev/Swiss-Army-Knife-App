@@ -1,6 +1,6 @@
 import cmd
 import shlex
-from commands.expenses import make_expense, list_expenses, change_expense, delete_expense
+from commands.expenses import make_expense, list_expenses, change_expense, delete_expense, expense_log
 from commands.todos import make_todo, list_todos, change_todo, delete_todo
 from commands.bills import make_bill, list_bills, change_bill, delete_bill
 
@@ -8,6 +8,8 @@ from commands.bills import make_bill, list_bills, change_bill, delete_bill
 class TodoAppCLI(cmd.Cmd):
     intro = "Welcome to your CLI To-Do App! Type 'help' or '?' to list commands."
     prompt = "(CLI) "
+
+    #Expense commands
 
     def do_lsexpense(self, arg):
         """List all expenses."""
@@ -39,20 +41,21 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: Both -description and -amount are required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: mkexpense -description <description> -amount <amount>")
+            print("Error: Invalid arguments. Usage: mkexpense -description <description> -amount <amount>"
+                  " -date <date> -category <category>")
 
     def do_chexpense(self, arg):
         """
         Modify an existing expense.
-        Usage: chexpense -id <id> [-description <description>] [-amount <amount>] [-date <date>] (optional)
+        Usage: chexpense -id <id> [-description <description>] [-amount <amount>] [-date <date>] (optional) [-category <category>]
         """
         try:
-            # Parse arguments
             args = shlex.split(arg)
             expense_id = None
             description = None
             amount = None
             date = None
+            category = None
 
             if "-id" in args:
                 expense_id = int(args[args.index("-id") + 1])
@@ -62,13 +65,16 @@ class TodoAppCLI(cmd.Cmd):
                 amount = float(args[args.index("-amount") + 1])
             if "-date" in args:
                 date = args[args.index("-date") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
 
             if expense_id is not None:
-                change_expense(expense_id=expense_id, description=description, amount=amount, date=date)
+                change_expense(expense_id=expense_id, description=description, amount=amount, date=date, category=category)
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: chexpense -id <id> [-description <description>] [-amount <amount>]")
+            print("Error: Invalid arguments. Usage: chexpense -id <id> [-description <description>] "
+                  "[-amount <amount>] [-date <date>] [-category <category>]")
 
     def do_delexpense(self, arg):
         """
@@ -88,6 +94,47 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: delexpense -id <id>")
+
+    def do_expenselog(self, arg):
+        """
+        Generate an expense log based on filters (start_date, end_date, or category) and optionally export to CSV.
+        Usage: expenselog [-start_date <date>] [-end_date <date>] [-category <category>] [-download]
+        """
+        try:
+            args = shlex.split(arg)
+            start_date = None
+            end_date = None
+            category = None
+            download = False
+
+            if "-start_date" in args:
+                start_date_idx = args.index("-start_date") + 1
+                if start_date_idx < len(args):
+                    start_date = args[start_date_idx]
+
+            if "-end_date" in args:
+                end_date_idx = args.index("-end_date") + 1
+                if end_date_idx < len(args):
+                    end_date = args[end_date_idx]
+
+            if "-category" in args:
+                category_idx = args.index("-category") + 1
+                if category_idx < len(args):
+                    category = args[category_idx]
+
+            if "-download" in args:
+                download = True
+
+            if start_date or end_date or category:
+                expense_log(start_date, end_date, category, download)
+            else:
+                print("Error: At least one filter (-start_date, -end_date, or -category) is required.")
+
+        except (ValueError, IndexError):
+            print(
+                "Error: Invalid arguments. Usage: expenselog [-start_date <date>] [-end_date <date>] "
+                "[-category <category>] [-download]")
+
 
         # Todo commands
     def do_lstodo(self, arg):
