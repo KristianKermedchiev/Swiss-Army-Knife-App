@@ -7,3 +7,4 @@ data.json
 .idea
 src/todo.md
 *.md
+*.csv
