@@ -3,6 +3,7 @@ import shlex
 from commands.expenses import make_expense, list_expenses, change_expense, delete_expense, expense_log
 from commands.todos import make_todo, list_todos, change_todo, delete_todo
 from commands.bills import make_bill, list_bills, change_bill, delete_bill
+from commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status
 
 
 class TodoAppCLI(cmd.Cmd):
@@ -137,6 +138,8 @@ class TodoAppCLI(cmd.Cmd):
 
 
         # Todo commands
+
+    #TODO commands
     def do_lstodo(self, arg):
         """List all todos."""
         list_todos()
@@ -211,6 +214,7 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: deltodo -id <id>")
 
+    #Bills commands
     def do_lsbill(self, arg):
         """List all bills."""
         list_bills()
@@ -281,6 +285,129 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: delbill -id <id>")
+
+    #Books commands
+    def do_lsbooks(self, arg):
+        """List all books."""
+        list_books()
+
+    def do_mkbook(self, arg):
+        """
+        Create a new book.
+        Usage: mkbook -title <title> -category <category> -pages <pages>
+        """
+        try:
+            args = shlex.split(arg)
+            title = None
+            category = None
+            pages = None
+
+            if "-title" in args:
+                title = args[args.index("-title") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
+            if "-pages" in args:
+                pages = args[args.index("-pages") + 1]
+
+            if title and category and pages:
+                make_book(title, category, pages)
+            else:
+                print("Error: -title, -category and -pages are required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: mkbook -title <title> -category <category> -pages <pages>.")
+
+    def do_chbook(self, arg):
+        """
+        Modify an existing book.
+        Usage: chbook -id <id> [-title <title>] [-category <category>] [-pages <pages>]
+        """
+        try:
+            args = shlex.split(arg)
+            book_id = None
+            title = None
+            category = None
+            pages = None
+
+            if "-id" in args:
+                book_id = int(args[args.index("-id") + 1])
+            if "-title" in args:
+                title = args[args.index("-title") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
+            if "-pages" in args:
+                pages = args[args.index("-pages") + 1]
+
+            if book_id is not None:
+                change_book(book_id, title, category, pages)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError) as e:
+            print(
+                "Error: Invalid arguments. Usage: chbook -id <id> [-title <title>] [-category <category>] [-pages <pages>]")
+
+    def do_addrating(self, arg):
+        """
+        Add rating to an existing book.
+        Usage: addrating -id <id> -rating (1-5)
+        """
+        try:
+            args = shlex.split(arg)
+            book_id = None
+            rating = None
+
+            if "-id" in args:
+                book_id = int(args[args.index("-id") + 1])
+            if "-rating" in args:
+                rating = args[args.index("-rating") + 1]
+
+            if book_id is not None:
+                add_rating(book_id, rating)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: addrating -id <id> -rating (1-5)")
+
+
+    def do_chstatus(self, arg):
+        """
+        Change the status of an existing book to the opposite one.
+        Usage: chstatus -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            book_id = None
+
+            if "-id" in args:
+                book_id = int(args[args.index("-id") + 1])
+
+            if book_id is not None:
+                change_status(book_id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: chstatus -id <id>")
+
+    def do_addprogress(self, args):
+        """
+        Add progress to an existing book.
+        Usage: addprogress -id <id> -pages <pages>
+        """
+        try:
+            args = shlex.split(args)
+            book_id = None
+            pages = None
+
+            if "-id" in args:
+                book_id = int(args[args.index("-id") + 1])
+            if "-pages" in args:
+                pages = args[args.index("-pages") + 1]
+
+            if book_id is not None:
+                add_progress(book_id, pages)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: addprogress -id <id> <pages>")
 
     def do_exit(self, arg):
         """Exit the program."""

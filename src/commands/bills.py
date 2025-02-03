@@ -12,10 +12,10 @@ def load_bills():
     return []
 
 
-def save_bills(todos):
+def save_bills(bills):
     """Save bills data to the JSON file."""
     with open(BILL_DATA_FILE, 'w') as file:
-        json.dump(todos, file, indent=4)
+        json.dump(bills, file, indent=4)
 
 
 def list_bills():
