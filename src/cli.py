@@ -10,6 +10,13 @@ class TodoAppCLI(cmd.Cmd):
     intro = "Welcome to your CLI To-Do App! Type 'help' or '?' to list commands."
     prompt = "(CLI) "
 
+    categories = {
+        "Expenses": ["lsexpense", "mkexpense", "chexpense", "delexpense", "expenselog"],
+        "Todo": ["lstodo", "mktodo", "chtodo", "deltodo"],
+        "Bills": ["lsbill", "mkbill", "chbill", "delbill"],
+        "Books": ["lsbooks", "mkbook", "chbook", "addrating", "addprogress", "chstatus"],
+    }
+
     #Expense commands
 
     def do_lsexpense(self, arg):
@@ -139,7 +146,7 @@ class TodoAppCLI(cmd.Cmd):
 
         # Todo commands
 
-    #TODO commands
+    #Todo commands
     def do_lstodo(self, arg):
         """List all todos."""
         list_todos()
@@ -407,6 +414,17 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: addprogress -id <id> <pages>")
+
+    def do_help(self, arg):
+        """Show categorized help menu."""
+        if arg:
+            return super().do_help(arg)
+
+        print("\nAvailable Commands:\n===============================")
+        for category, commands in self.categories.items():
+            print(f"{category}:")
+            print("  " + "  ".join(commands))
+        print("\nType 'help <command>' for detailed usage information.\n")
 
     def do_exit(self, arg):
         """Exit the program."""
