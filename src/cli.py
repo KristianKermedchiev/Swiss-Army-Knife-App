@@ -367,7 +367,6 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: addrating -id <id> -rating (1-5)")
 
-
     def do_chstatus(self, arg):
         """
         Change the status of an existing book to the opposite one.
