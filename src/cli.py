@@ -4,6 +4,7 @@ from commands.expenses import make_expense, list_expenses, change_expense, delet
 from commands.todos import make_todo, list_todos, change_todo, delete_todo
 from commands.bills import make_bill, list_bills, change_bill, delete_bill
 from commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status, delete_book
+from commands.habits import make_habit, list_habits, change_habit, delete_habit, habit_log, mark_habit
 
 
 class TodoAppCLI(cmd.Cmd):
@@ -15,6 +16,7 @@ class TodoAppCLI(cmd.Cmd):
         "Todo": ["lstodo", "mktodo", "chtodo", "deltodo"],
         "Bills": ["lsbill", "mkbill", "chbill", "delbill"],
         "Books": ["lsbooks", "mkbook", "chbook", "addbookrating", "addbookprogress", "chbookstatus", "rmbook"],
+        "Habits": ["lshabits", "mkhabit", "chhabit", "rmhabit", "habitlog", "markhabit"],
     }
 
     #Expense commands
@@ -417,6 +419,145 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: rmbook -id <id>")
+
+    # Habit commands
+    def do_lshabits(self, arg):
+        """
+        List all habits, or filter by ID or date.
+        Usage: lshabits [-id <id>] [-date <date>]
+        """
+        try:
+            args = shlex.split(arg)
+            habit_id = None
+            date = None
+
+            if "-id" in args:
+                habit_id = int(args[args.index("-id") + 1])
+            if "-date" in args:
+                date = args[args.index("-date") + 1]
+
+            list_habits(date=date, id=habit_id)
+
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: lshabits [-id <id>] [-date <dd/mm/yyyy>]")
+
+    def do_mkhabit(self, arg):
+        """
+        Create a new habit.
+        Usage: mkhabit -name <habit_name> -goal <goal> -unit <liters/km/pages>
+        """
+        try:
+            args = shlex.split(arg)
+            name = None
+            goal = None
+            unit = None
+
+            if "-name" in args:
+                name = args[args.index("-name") + 1]
+            if "-goal" in args:
+                goal = args[args.index("-goal") + 1]
+            if "-unit" in args:
+                unit = args[args.index("-unit") + 1]
+
+            if name and goal and unit:
+                make_habit(name, goal, unit)
+            else:
+                print("Error: -name, -goal, and -unit are required.")
+        except (ValueError, IndexError):
+            print(
+                "Error: Invalid arguments. mkhabit -name <habit_name> -goal <goal> -unit <liters/km/pages>")
+
+    def do_chhabit(self, arg):
+        """
+        Modify an existing habit.
+        Usage: chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]
+        """
+        try:
+            args = shlex.split(arg)
+            habit_id = None
+            name = None
+            goal = None
+            unit = None
+
+            if "-id" in args:
+                habit_id = int(args[args.index("-id") + 1])
+            if "-name" in args:
+                name = args[args.index("-name") + 1]
+            if "-goal" in args:
+                goal = args[args.index("-goal") + 1]
+            if "-unit" in args:
+                unit = args[args.index("-unit") + 1]
+
+            if habit_id is not None:
+                change_habit(habit_id, name, goal, unit)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print(
+                "Error: Invalid arguments. chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]")
+
+    def do_rmhabit(self, arg):
+        """
+        Remove a habit by ID.
+        Usage: rmhabit -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+
+            if id is not None:
+                delete_habit(id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: rmhabit -id <id>")
+
+    def do_habitlog(self, arg):
+        """
+        Check the streak of a habit by providing its ID.
+        Usage: habitlog -id <id> [-download]
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+            download = False
+
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+            if "-download" in args:
+                download = True
+
+            if id is None:
+                print("Error: You must specify a habit ID using -id.")
+                return
+
+            habit_log(id=id, download=download)
+
+        except (ValueError, IndexError):
+            print(
+                "Error: Invalid arguments. Usage: habitlog -id <id> [-download]")
+
+    def do_markhabit(self, arg):
+        """
+        Mark a habit as completed for today.
+        Usage: markhabit -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+
+            if id is not None:
+                mark_habit(id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print("Usage: markhabit -id <id>")
 
     def do_help(self, arg):
         """Show categorized help menu."""
