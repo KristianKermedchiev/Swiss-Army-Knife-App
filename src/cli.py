@@ -3,7 +3,7 @@ import shlex
 from commands.expenses import make_expense, list_expenses, change_expense, delete_expense, expense_log
 from commands.todos import make_todo, list_todos, change_todo, delete_todo
 from commands.bills import make_bill, list_bills, change_bill, delete_bill
-from commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status
+from commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status, delete_book
 
 
 class TodoAppCLI(cmd.Cmd):
@@ -14,7 +14,7 @@ class TodoAppCLI(cmd.Cmd):
         "Expenses": ["lsexpense", "mkexpense", "chexpense", "delexpense", "expenselog"],
         "Todo": ["lstodo", "mktodo", "chtodo", "deltodo"],
         "Bills": ["lsbill", "mkbill", "chbill", "delbill"],
-        "Books": ["lsbooks", "mkbook", "chbook", "addrating", "addprogress", "chstatus"],
+        "Books": ["lsbooks", "mkbook", "chbook", "addbookrating", "addbookprogress", "chbookstatus", "rmbook"],
     }
 
     #Expense commands
@@ -22,7 +22,6 @@ class TodoAppCLI(cmd.Cmd):
     def do_lsexpense(self, arg):
         """List all expenses."""
         list_expenses()
-
     def do_mkexpense(self, arg):
         """
         Create a new expense.
@@ -51,7 +50,6 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: mkexpense -description <description> -amount <amount>"
                   " -date <date> -category <category>")
-
     def do_chexpense(self, arg):
         """
         Modify an existing expense.
@@ -83,11 +81,10 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: chexpense -id <id> [-description <description>] "
                   "[-amount <amount>] [-date <date>] [-category <category>]")
-
-    def do_delexpense(self, arg):
+    def do_rmexpense(self, arg):
         """
-        Delete an expense by ID.
-        Usage: delexpense -id <id>
+        Remove an expense by ID.
+        Usage: rmexpense -id <id>
         """
         try:
             args = shlex.split(arg)
@@ -101,8 +98,7 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: delexpense -id <id>")
-
+            print("Error: Invalid arguments. Usage: rmexpense -id <id>")
     def do_expenselog(self, arg):
         """
         Generate an expense log based on filters (start_date, end_date, or category) and optionally export to CSV.
@@ -150,7 +146,6 @@ class TodoAppCLI(cmd.Cmd):
     def do_lstodo(self, arg):
         """List all todos."""
         list_todos()
-
     def do_mktodo(self, arg):
         """
         Create a new todo.
@@ -172,7 +167,6 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -description is required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: mktodo -description <description> -duedate <due_date>")
-
     def do_chtodo(self, arg):
         """
         Modify an existing todo.
@@ -201,10 +195,9 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print(
                 "Error: Invalid arguments. Usage: chtodo -id <id> [-description <description>] [-duedate <due_date>]")
-
-    def do_deltodo(self, arg):
+    def do_rmtodo(self, arg):
         """
-        Delete a todo by ID.
+        Remove a todo by ID.
         Usage: deltodo -id <id>
         """
         try:
@@ -219,13 +212,12 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: deltodo -id <id>")
+            print("Error: Invalid arguments. Usage: rmtodo -id <id>")
 
     #Bills commands
     def do_lsbill(self, arg):
         """List all bills."""
         list_bills()
-
     def do_mkbill(self, arg):
         """
         Create a new bill.
@@ -247,7 +239,6 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -description and -price are required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: mktodo -description <description> -price <price>")
-
     def do_chbill(self, arg):
         """
         Modify an existing bill.
@@ -273,11 +264,10 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print(
                 "Error: Invalid arguments. Usage: chbill -id <id> [-description <description>] [-price <price>]")
-
-    def do_delbill(self, arg):
+    def do_rmbill(self, arg):
         """
-        Delete a bill by ID.
-        Usage: delbill -id <id>
+        Remove a bill by ID.
+        Usage: rmbill -id <id>
         """
         try:
             args = shlex.split(arg)
@@ -291,13 +281,12 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: delbill -id <id>")
+            print("Error: Invalid arguments. Usage: rmbill -id <id>")
 
     #Books commands
     def do_lsbooks(self, arg):
         """List all books."""
         list_books()
-
     def do_mkbook(self, arg):
         """
         Create a new book.
@@ -322,7 +311,6 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -title, -category and -pages are required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: mkbook -title <title> -category <category> -pages <pages>.")
-
     def do_chbook(self, arg):
         """
         Modify an existing book.
@@ -351,11 +339,10 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError) as e:
             print(
                 "Error: Invalid arguments. Usage: chbook -id <id> [-title <title>] [-category <category>] [-pages <pages>]")
-
-    def do_addrating(self, arg):
+    def do_addbookrating(self, arg):
         """
         Add rating to an existing book.
-        Usage: addrating -id <id> -rating (1-5)
+        Usage: addbookrating -id <id> -rating (1-5)
         """
         try:
             args = shlex.split(arg)
@@ -372,12 +359,11 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: addrating -id <id> -rating (1-5)")
-
-    def do_chstatus(self, arg):
+            print("Error: Invalid arguments. Usage: addbookrating -id <id> -rating (1-5)")
+    def do_chbookstatus(self, arg):
         """
         Change the status of an existing book to the opposite one.
-        Usage: chstatus -id <id>
+        Usage: chbookstatus -id <id>
         """
         try:
             args = shlex.split(arg)
@@ -391,15 +377,14 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: chstatus -id <id>")
-
-    def do_addprogress(self, args):
+            print("Error: Invalid arguments. Usage: chbookstatus -id <id>")
+    def do_addbookprogress(self, arg):
         """
         Add progress to an existing book.
-        Usage: addprogress -id <id> -pages <pages>
+        Usage: addbookprogress -id <id> -pages <pages>
         """
         try:
-            args = shlex.split(args)
+            args = shlex.split(arg)
             book_id = None
             pages = None
 
@@ -413,7 +398,25 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: addprogress -id <id> <pages>")
+            print("Error: Invalid arguments. Usage: addbookprogress -id <id> <pages>")
+    def do_rmbook(self, arg):
+        """
+        Remove a book by ID.
+        Usage: rmbook -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            book_id = None
+
+            if "-id" in args:
+                book_id = int(args[args.index("-id") + 1])
+
+            if book_id is not None:
+                delete_book(book_id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: rmbook -id <id>")
 
     def do_help(self, arg):
         """Show categorized help menu."""

@@ -127,3 +127,17 @@ def change_book(book_id, title, category, pages):
             return
 
     print(f"Error: Book with ID {book_id} not found.")
+
+
+def delete_book(book_id):
+    """Delete a book by ID."""
+    books = load_books()
+
+    for book in books:
+        if book["id"] == book_id:
+            books.remove(book)
+            save_books(books)
+            print(f"Book with ID {book_id} deleted successfully.")
+            return
+
+    print(f"Error: Book with ID {book_id} not found.")
