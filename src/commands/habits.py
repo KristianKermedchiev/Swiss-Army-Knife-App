@@ -2,8 +2,9 @@ import json
 import os
 import datetime
 import pandas as pd
+from utils.file_utils import get_data_file_path
 
-HABITS_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'habits.json')
+HABITS_DATA_FILE = get_data_file_path('habits.json')
 
 
 def load_habits():
@@ -87,6 +88,11 @@ def list_habits(date=None, id=None):
 
 def delete_habit(id):
     """Remove a habit by ID."""
+
+    if id is None:
+        print("Error: Habit ID is required.")
+        return
+
     habits = load_habits()
     habits = [habit for habit in habits if habit['id'] != id]
     save_habits(habits)

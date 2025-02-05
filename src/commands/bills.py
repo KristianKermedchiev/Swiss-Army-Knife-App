@@ -1,8 +1,8 @@
 import json
 import os
+from utils.file_utils import get_data_file_path
 
-BILL_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'bills.json')
-
+BILL_DATA_FILE = get_data_file_path('bills.json')
 
 def load_bills():
     """Load bills data from the JSON file."""

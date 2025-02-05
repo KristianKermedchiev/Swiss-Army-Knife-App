@@ -6,6 +6,7 @@ from commands.bills import make_bill, list_bills, change_bill, delete_bill
 from commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status, delete_book
 from commands.habits import make_habit, list_habits, change_habit, delete_habit, habit_log, mark_habit
 from commands.goals import list_goals, delete_goal, archive_goal, add_goal_progress, change_goal, make_goal
+from commands.studies import list_studies, delete_study, make_study, change_study, log_study, mark_study_completed
 
 
 class TodoAppCLI(cmd.Cmd):
@@ -13,16 +14,17 @@ class TodoAppCLI(cmd.Cmd):
     prompt = "(CLI) "
 
     categories = {
-        "Expenses": ["lsexpense", "mkexpense", "chexpense", "delexpense", "expenselog"],
-        "Todo": ["lstodo", "mktodo", "chtodo", "deltodo"],
-        "Bills": ["lsbill", "mkbill", "chbill", "delbill"],
+        "Expenses": ["lsexpenses", "mkexpense", "chexpense", "delexpense", "expenselog"],
+        "Todo": ["lstodos", "mktodo", "chtodo", "deltodo"],
+        "Bills": ["lsbills", "mkbill", "chbill", "delbill"],
         "Books": ["lsbooks", "mkbook", "chbook", "addbookrating", "addbookprogress", "chbookstatus", "rmbook"],
         "Habits": ["lshabits", "mkhabit", "chhabit", "rmhabit", "habitlog", "markhabit"],
-        "Goals": ["lshoals", 'mkgoal', 'chgoal', 'rmgoal', 'archivegoal', 'addgoalprogress']
+        "Goals": ["lshoals", 'mkgoal', 'chgoal', 'rmgoal', 'archivegoal', 'addgoalprogress'],
+        "Studies": ["lsstudies", "mkstudy", "chstudy", "rmstudy", "logstudy", "markstudycomplete"]
     }
 
     #Expense commands
-    def do_lsexpense(self, arg):
+    def do_lsexpenses(self, arg):
         """List all expenses."""
         list_expenses()
     def do_mkexpense(self, arg):
@@ -143,7 +145,7 @@ class TodoAppCLI(cmd.Cmd):
                 "[-category <category>] [-download]")
 
     #Todo commands
-    def do_lstodo(self, arg):
+    def do_lstodos(self, arg):
         """List all todos."""
         list_todos()
     def do_mktodo(self, arg):
@@ -215,7 +217,7 @@ class TodoAppCLI(cmd.Cmd):
             print("Error: Invalid arguments. Usage: rmtodo -id <id>")
 
     #Bills commands
-    def do_lsbill(self, arg):
+    def do_lsbills(self, arg):
         """List all bills."""
         list_bills()
     def do_mkbill(self, arg):
@@ -675,6 +677,126 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -id and -value are required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: addgoalprogress -id <id> -value <value>")
+
+    # Study commands
+    def do_lsstudies(self, arg):
+        """
+        List all studies.
+        Usage: lsstudies [-id <id>]
+        """
+        try:
+            args = shlex.split(arg)
+            study_id = None
+
+            if "-id" in args:
+                study_id = int(args[args.index("-id") + 1])
+
+            list_studies(study_id=study_id)
+
+        except(ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: lsstudies [-id <id>]")
+    def do_mkstudy(self, arg):
+        """
+        Create a new study.
+        Usage: mkstudy -name <name> -category <category>
+        """
+        try:
+            args = shlex.split(arg)
+            name = None
+            category = None
+
+            if "-name" in args:
+                name = args[args.index("-name") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
+
+            if name and category:
+                make_study(name, category)
+            else:
+                print("Error: -name and -category are required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: mkstudy -name <name> -category <category>")
+    def do_chstudy(self, arg):
+        """
+        Update an existing study.
+        Usage: chstudy -id <id> [-name <name>] [-category <category>]
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+            name = None
+            category = None
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+            if "-name" in args:
+                name = args[args.index("-name") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
+
+            if id is not None:
+                change_study(id, name, category)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: chstudy -id <id> [-name <name>] [-category <category>]")
+    def do_rmstudy(self, arg):
+        """
+        Remove a study by ID.
+        Usage: rmstudy -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+
+            if id is not None:
+                delete_study(id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: rmstudy -id <id>")
+    def do_logstudy(self, arg):
+        """
+        Log a learned topic.
+        Usage: logstudy -id <id> -name <name> [-date <date: dd/mm/YYYY>]
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+            name = None
+            date = None
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+            if "-name" in args:
+                name = args[args.index("-name") + 1]
+            if "-date" in args:
+                date = args[args.index("-date") + 1]
+
+            if id and name:
+                log_study(id, name, date)
+            else:
+                print("Error: -id and name are required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: logstudy -id <id> -name <name> [-date <date: dd/mm/YYYY>]")
+    def do_markstudycomplete(self, arg):
+        """
+        Mark a study as complete by ID.
+        Usage: markstudycomplete -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+
+            if id is not None:
+                mark_study_completed(id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: markstudycomplete -id <id>")
+
 
     def do_help(self, arg):
         """Show categorized help menu."""

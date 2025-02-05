@@ -2,9 +2,9 @@ import datetime
 import json
 import os
 import pandas as pd
+from utils.file_utils import get_data_file_path
 
-
-EXPENSES_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'expenses.json')
+EXPENSES_DATA_FILE = get_data_file_path('expenses.json')
 
 
 def load_expenses():
@@ -28,7 +28,6 @@ def list_expenses():
         print("\nNo expenses found.")
         return
 
-    print("\nList of Expenses:")
     for expense in expenses:
         id = expense.get('id', 'No id available')
         date = expense.get('date', 'No date available')
@@ -143,10 +142,9 @@ def expense_log(start_date=None, end_date=None, category=None, download=False):
             f"{expense['id']} / {expense['date']} / {expense['description']} / {expense['amount']} / {expense['category']}")
 
     if download:
-        current_date = datetime.datetime.now().strftime('%d-%m-%Y')  # Fix filename issue
+        current_date = datetime.datetime.now().strftime('%d-%m-%Y')
         csv_file = f"expense_report_{current_date}.csv"
 
-        # Using Pandas to handle CSV writing
         df = pd.DataFrame(filtered_expenses)
         df.to_csv(csv_file, index=False)
 

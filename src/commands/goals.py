@@ -1,18 +1,8 @@
-"""2. Goal Manager
-Purpose: Store tasks, ideas, goals and personal improvements.
-mkgoal - Create a goal, -id, -name, -measuringUnit, -endGoalValue, -startGoalValue, -status, -progress, -category, -archived: True/False
-rmgoal - Remove a goal, -id
-lsgoals - List goals, optional: -id, -category, -progress, -status, -archived, filtered by archived:False first
-archivegoal - Archive a goal by changing the status to archive
-chgoal - Modify the goal, -id, -name, -measuringUnit, -endGoalValue, -startGoalValue, -status, -progress, -category, -archived: True/False
-addgoalprogress - Add goal progress -id, -value (+=currentValue). check if progress becomes 100% and notify user and change status to Complete
-"""
-
-
 import json
 import os
+from utils.file_utils import get_data_file_path
 
-GOAL_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'goals.json')
+GOAL_DATA_FILE = get_data_file_path('goals.json')
 
 
 def load_goals():
