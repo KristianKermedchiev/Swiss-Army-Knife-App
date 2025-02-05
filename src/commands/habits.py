@@ -5,6 +5,7 @@ import pandas as pd
 
 HABITS_DATA_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'habits.json')
 
+
 def load_habits():
     """Load habits data from the JSON file."""
     if os.path.exists(HABITS_DATA_FILE):
@@ -80,7 +81,6 @@ def list_habits(date=None, id=None):
         print("No habits found.")
         return
 
-    print("All Habits:")
     for habit in habits:
         print(f"{habit['id']}. {habit['name']} - Target: {habit['goal']} {habit['unit']}")
 

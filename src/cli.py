@@ -5,6 +5,7 @@ from commands.todos import make_todo, list_todos, change_todo, delete_todo
 from commands.bills import make_bill, list_bills, change_bill, delete_bill
 from commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status, delete_book
 from commands.habits import make_habit, list_habits, change_habit, delete_habit, habit_log, mark_habit
+from commands.goals import list_goals, delete_goal, archive_goal, add_goal_progress, change_goal, make_goal
 
 
 class TodoAppCLI(cmd.Cmd):
@@ -17,10 +18,10 @@ class TodoAppCLI(cmd.Cmd):
         "Bills": ["lsbill", "mkbill", "chbill", "delbill"],
         "Books": ["lsbooks", "mkbook", "chbook", "addbookrating", "addbookprogress", "chbookstatus", "rmbook"],
         "Habits": ["lshabits", "mkhabit", "chhabit", "rmhabit", "habitlog", "markhabit"],
+        "Goals": ["lshoals", 'mkgoal', 'chgoal', 'rmgoal', 'archivegoal', 'addgoalprogress']
     }
 
     #Expense commands
-
     def do_lsexpense(self, arg):
         """List all expenses."""
         list_expenses()
@@ -140,9 +141,6 @@ class TodoAppCLI(cmd.Cmd):
             print(
                 "Error: Invalid arguments. Usage: expenselog [-start_date <date>] [-end_date <date>] "
                 "[-category <category>] [-download]")
-
-
-        # Todo commands
 
     #Todo commands
     def do_lstodo(self, arg):
@@ -395,12 +393,12 @@ class TodoAppCLI(cmd.Cmd):
             if "-pages" in args:
                 pages = args[args.index("-pages") + 1]
 
-            if book_id is not None:
+            if book_id is not None and pages is not None:
                 add_progress(book_id, pages)
             else:
-                print("Error: -id is required.")
+                print("Error: -id and -pages are required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: addbookprogress -id <id> <pages>")
+            print("Error: Invalid arguments. Usage: addbookprogress -id <id> -pages <pages>")
     def do_rmbook(self, arg):
         """
         Remove a book by ID.
@@ -440,7 +438,6 @@ class TodoAppCLI(cmd.Cmd):
 
         except (ValueError, IndexError):
             print("Error: Invalid arguments. Usage: lshabits [-id <id>] [-date <dd/mm/yyyy>]")
-
     def do_mkhabit(self, arg):
         """
         Create a new habit.
@@ -464,12 +461,10 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -name, -goal, and -unit are required.")
         except (ValueError, IndexError):
-            print(
-                "Error: Invalid arguments. mkhabit -name <habit_name> -goal <goal> -unit <liters/km/pages>")
-
+            print("Error: Invalid arguments. mkhabit -name <habit_name> -goal <goal> -unit <liters/km/pages>")
     def do_chhabit(self, arg):
         """
-        Modify an existing habit.
+        Update an existing habit.
         Usage: chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]
         """
         try:
@@ -493,9 +488,7 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -id is required.")
         except (ValueError, IndexError):
-            print(
-                "Error: Invalid arguments. chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]")
-
+            print("Error: Invalid arguments. chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]")
     def do_rmhabit(self, arg):
         """
         Remove a habit by ID.
@@ -514,7 +507,6 @@ class TodoAppCLI(cmd.Cmd):
                 print("Error: -id is required.")
         except (ValueError, IndexError):
             print("Error: Invalid arguments. Usage: rmhabit -id <id>")
-
     def do_habitlog(self, arg):
         """
         Check the streak of a habit by providing its ID.
@@ -539,7 +531,6 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError):
             print(
                 "Error: Invalid arguments. Usage: habitlog -id <id> [-download]")
-
     def do_markhabit(self, arg):
         """
         Mark a habit as completed for today.
@@ -559,6 +550,132 @@ class TodoAppCLI(cmd.Cmd):
         except (ValueError, IndexError):
             print("Usage: markhabit -id <id>")
 
+    # Goal commands
+    def do_lsgoals(self, arg):
+        """List all goals."""
+        list_goals()
+    def do_mkgoal(self, arg):
+        """
+        Create a new goal.
+        Usage: mkgoal -name <name> -unit <unit> -startingValue <starting_value> -endingValue <ending_value> -category
+        """
+        try:
+            args = shlex.split(arg)
+            name = None
+            unit = None
+            starting_value = None
+            ending_value = None
+            category = None
+
+            if "-name" in args:
+                name = args[args.index("-name") + 1]
+            if "-unit" in args:
+                unit = args[args.index("-unit") + 1]
+            if "-startingValue" in args:
+                starting_value = args[args.index("-startingValue") + 1]
+            if "-endingValue" in args:
+                ending_value = args[args.index("-endingValue") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
+
+            if name and unit and starting_value and ending_value and category:
+                make_goal(name, unit, starting_value, ending_value, category)
+            else:
+                print("Error: -name, -unit, -startingValue, -endingValue and -category are required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: mkgoal -name <name> -unit <unit> -startingValue <starting_value> -endingValue <ending_value> -category")
+    def do_chgoal(self, arg):
+        """
+        Update an existing goal.
+        Usage: chgoal -id <id> [-name <name>] [-unit <unit>] [-startingValue <startingValue>] [-endingValue <endingValue>] [-category <category>]
+        """
+        try:
+            args = shlex.split(arg)
+            goal_id = None
+            name = None
+            unit = None
+            starting_value = None
+            ending_value = None
+            category = None
+
+            if "-id" in args:
+                goal_id = int(args[args.index("-id") + 1])
+            if "-name" in args:
+                name = args[args.index("-name") + 1]
+            if "-unit" in args:
+                unit = args[args.index("-unit") + 1]
+            if "-startingValue" in args:
+                starting_value = args[args.index("-startingValue") + 1]
+            if "-endingValue" in args:
+                ending_value = args[args.index("-endingValue") + 1]
+            if "-category" in args:
+                category = args[args.index("-category") + 1]
+
+            if goal_id is not None:
+                change_goal(goal_id, name, unit, starting_value, ending_value, category)
+            else:
+                print("Error: -id is required.")
+        except(ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: chgoal -id <id> [-name <name>] [-unit <unit>] "
+                    "[-startingValue <startingValue>] [-endingValue <endingValue>] [-category <category>]")
+    def do_rmgoal(self, arg):
+        """
+        Remove a goal by ID.
+        Usage: rmgoal -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+
+            if id is not None:
+                delete_goal(id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: rmgoal -id <id>")
+    def do_archivegoal(self, arg):
+        """
+        Archive a goal by ID.
+        Usage: archivegoal -id <id>
+        """
+        try:
+            args = shlex.split(arg)
+            id = None
+
+            if "-id" in args:
+                id = int(args[args.index("-id") + 1])
+
+            if id is not None:
+                archive_goal(id)
+            else:
+                print("Error: -id is required.")
+        except (ValueError, IndexError):
+            print("Error: Invalid arguments. Usage: archivegoal -id <id>")
+    def do_addgoalprogress(self, arg):
+        """
+        Adds progress to an existing goal.
+        Usage: addgoalprogress -id <id> -value <value>
+        """
+        try:
+            args = shlex.split(arg)
+            goal_id = None
+            value = None
+
+            if "-id" in args:
+                goal_id = int(args[args.index("-id") + 1])
+            if "-value" in args:
+                value = args[args.index("-value") + 1]
+
+            if goal_id is not None and value is not None:
+                add_goal_progress(goal_id, value)
+            else:
+                print("Error: -id and -value are required.")
+        except (ValueError, IndexError) as e:
+            print("Error: Invalid arguments. Usage: addgoalprogress -id <id> -value <value>")
+
     def do_help(self, arg):
         """Show categorized help menu."""
         if arg:
@@ -569,7 +686,6 @@ class TodoAppCLI(cmd.Cmd):
             print(f"{category}:")
             print("  " + "  ".join(commands))
         print("\nType 'help <command>' for detailed usage information.\n")
-
     def do_exit(self, arg):
         """Exit the program."""
         print("Goodbye!")
