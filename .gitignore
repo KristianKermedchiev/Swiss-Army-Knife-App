@@ -8,3 +8,4 @@ data.json
 src/todo.md
 *.md
 *.csv
+/src/build
