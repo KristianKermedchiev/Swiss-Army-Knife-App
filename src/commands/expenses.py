@@ -34,7 +34,7 @@ def list_expenses():
         description = expense.get('description', 'No description available')
         amount = expense.get('amount', 'No amount available')
         category = expense.get('category', 'No category available')
-        print(f"{id} / {date} / {description} / {amount} / {category}")
+        print(f"id: {id} / date: {date} / description: {description} / amount: {amount} / category: {category}")
 
 
 def make_expense(description=None, amount=None, date=None, category=None):
@@ -139,13 +139,21 @@ def expense_log(start_date=None, end_date=None, category=None, download=False):
     print("\nFiltered Expenses:")
     for expense in filtered_expenses:
         print(
-            f"{expense['id']} / {expense['date']} / {expense['description']} / {expense['amount']} / {expense['category']}")
+            f"id: {expense['id']} / date: {expense['date']} / description: {expense['description']} / amount: "
+            f"{expense['amount']} / category:{expense['category']}")
 
     if download:
+        # Prepare the CSV export
         current_date = datetime.datetime.now().strftime('%d-%m-%Y')
         csv_file = f"expense_report_{current_date}.csv"
 
+        # Create a pandas DataFrame, ensuring proper column names
         df = pd.DataFrame(filtered_expenses)
+
+        # If you'd like to customize columns or reorder them
+        df = df[['id', 'date', 'description', 'amount', 'category']]  # Reorder columns if needed
+
+        # Save to CSV with proper formatting
         df.to_csv(csv_file, index=False)
 
         print(f"Expense report saved as {csv_file}.")

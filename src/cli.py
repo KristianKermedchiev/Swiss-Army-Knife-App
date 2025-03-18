@@ -10,7 +10,7 @@ from commands.studies import list_studies, delete_study, make_study, change_stud
 
 
 class TodoAppCLI(cmd.Cmd):
-    intro = "Welcome to your CLI To-Do App! Type 'help' or '?' to list commands."
+    intro = "Welcome to the Swiss-Army-Knife App! Type 'help' or '?' to list commands."
     prompt = "(CLI) "
 
     categories = {
@@ -30,7 +30,7 @@ class TodoAppCLI(cmd.Cmd):
     def do_mkexpense(self, arg):
         """
         Create a new expense.
-        Usage: mkexpense -description <description> -amount <amount> -date <date> (optional in format %dd/%mm/%YYYY) -category <category>
+        Usage: mkexpense -description <description> -amount <amount> [-date <date>] (optional in format %dd/%mm/%YYYY) -category <category>
         """
         try:
             args = shlex.split(arg)
@@ -51,14 +51,14 @@ class TodoAppCLI(cmd.Cmd):
             if description and amount and category:
                 make_expense(description, amount, date, category)
             else:
-                print("Error: Both -description and -amount are required.")
+                print("Error: Both -description, -amount and -category are required.")
         except (ValueError, IndexError) as e:
             print("Error: Invalid arguments. Usage: mkexpense -description <description> -amount <amount>"
-                  " -date <date> -category <category>")
+                  " [-date <date>] -category <category>")
     def do_chexpense(self, arg):
         """
         Modify an existing expense.
-        Usage: chexpense -id <id> [-description <description>] [-amount <amount>] [-date <date>] (optional) [-category <category>]
+        Usage: chexpense -id <id> [-description <description>] [-amount <amount>] [-date <date>] [-category <category>]
         """
         try:
             args = shlex.split(arg)
