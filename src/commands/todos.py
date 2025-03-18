@@ -28,7 +28,7 @@ def list_todos():
 
     print("\nList of todos:")
     for todo in todos:
-        print(f"{todo['id']} / {todo['description']} / {todo['due_date']} / {todo['status']}")
+        print(f"id: {todo['id']} / description: {todo['description']} / due_date: {todo['due_date']} / status: {todo['status']}")
 
 
 def make_todo(description, due_date=None):

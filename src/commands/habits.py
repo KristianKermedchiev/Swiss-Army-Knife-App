@@ -65,7 +65,7 @@ def list_habits(date=None, id=None):
         if habit:
             print(f"Habit: {habit['name']}")
             for log in habit['log']:
-                print(f"{habit['name']}: {habit['goal']} {habit['unit']} - {log['completed']}")
+                print(f"name: {habit['name']} / goal: {habit['goal']} / unit: {habit['unit']} / log: {log['completed']}")
         else:
             print("Habit not found.")
         return
@@ -75,7 +75,7 @@ def list_habits(date=None, id=None):
         for habit in habits:
             for log in habit['log']:
                 if log['date'] == date:
-                    print(f"{habit['name']}: {habit['goal']} {habit['unit']} - {log['completed']}")
+                    print(f"name: {habit['name']} / goal: {habit['goal']} / unit: {habit['unit']} / log: {log['completed']}")
         return
 
     if not habits:
@@ -83,7 +83,7 @@ def list_habits(date=None, id=None):
         return
 
     for habit in habits:
-        print(f"{habit['id']}. {habit['name']} - Target: {habit['goal']} {habit['unit']}")
+        print(f"name: {habit['name']} / goal: {habit['goal']} / unit: {habit['unit']}")
 
 
 def delete_habit(id):
@@ -152,5 +152,6 @@ def habit_log(id, download=False):
     if download:
         df = pd.DataFrame({'Date': [date.strftime('%d/%m/%Y') for date in log_dates]})
         file_name = f"habit_{id}_log.csv"
+        df = df[['id', 'name', 'goal', 'unit', 'log']]
         df.to_csv(file_name, index=False)
         print(f"Habit log saved as '{file_name}'")

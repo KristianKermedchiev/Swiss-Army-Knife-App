@@ -27,7 +27,8 @@ def list_books():
         return
 
     for book in books:
-        print(f"{book['id']} / {book['title']} / {book['category']} / {book['progress']} / {book['status']} / {book['rating']} ")
+        print(f"id: {book['id']} / title: {book['title']} / category: {book['category']} / progress: {book['progress']}"
+              f" / status: {book['status']} / rating: {book['rating']} ")
 
 
 def make_book(title, category, pages):

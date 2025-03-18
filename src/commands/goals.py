@@ -111,8 +111,9 @@ def list_goals():
         else:
             percent_progress = 0
 
-        print(f"{goal['id']}. {goal['name']} in category {goal['category']} Start: {goal['startingValue']} - Target: {goal['endValue']} {goal['unit']}, "
-              f"Progress: {percent_progress}%, status: {goal['status']}, archived: {goal['archived']}")
+        print(f"id: {goal['id']} / name: {goal['name']} / category: {goal['category']} / Start: {goal['startingValue']} "
+              f"/ Target: {goal['endValue']} / unit: {goal['unit']}, "
+              f"Progress: {percent_progress}% / status: {goal['status']} / archived: {goal['archived']}")
 
 
 

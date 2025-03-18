@@ -151,7 +151,7 @@ class TodoAppCLI(cmd.Cmd):
     def do_mktodo(self, arg):
         """
         Create a new todo.
-        Usage: mktodo -description <description> -duedate <due_date> (optional)
+        Usage: mktodo -description <description> [-duedate <due_date>]
         """
         try:
             args = shlex.split(arg)
@@ -168,7 +168,7 @@ class TodoAppCLI(cmd.Cmd):
             else:
                 print("Error: -description is required.")
         except (ValueError, IndexError) as e:
-            print("Error: Invalid arguments. Usage: mktodo -description <description> -duedate <due_date>")
+            print("Error: Invalid arguments. Usage: mktodo -description <description> [-duedate <due_date>]")
     def do_chtodo(self, arg):
         """
         Modify an existing todo.

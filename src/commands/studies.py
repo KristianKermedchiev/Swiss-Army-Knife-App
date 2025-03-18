@@ -99,7 +99,7 @@ def list_studies(study_id=None):
     if study_id:
         study = next((s for s in studies if s['id'] == study_id), None)
         if study:
-            print(f"{study['id']} - {study['name']} ({study['category']}) - {study['status']}")
+            print(f"id: {study['id']} / name: {study['name']} / category: ({study['category']}) / status: {study['status']}")
             if study.get('topics'):
                 for topic in study['topics']:
                     print(f"  - {topic['date']}: {topic['name']}")
@@ -108,8 +108,8 @@ def list_studies(study_id=None):
         return
 
     for study in studies:
-        print(f"{study['id']} / {study['name']} / {study['category']} /"
-              f" {study['status']}")
+        print(f"id: {study['id']} / name: {study['name']} / category: {study['category']} /"
+              f" status: {study['status']}")
 
 
 def mark_study_completed(study_id=None):
