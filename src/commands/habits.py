@@ -150,8 +150,22 @@ def habit_log(id, download=False):
     print(f"Longest streak: {longest_streak} days")
 
     if download:
-        df = pd.DataFrame({'Date': [date.strftime('%d/%m/%Y') for date in log_dates]})
+        # Create a list of dictionaries for each log entry, including habit data
+        habit_data_for_csv = []
+        for log_entry in habit['log']:
+            habit_data_for_csv.append({
+                'id': habit['id'],
+                'name': habit['name'],
+                'goal': habit['goal'],
+                'unit': habit['unit'],
+                'date': log_entry['date'],
+                'completed': log_entry['completed']
+            })
+
+        # Create the DataFrame
+        df = pd.DataFrame(habit_data_for_csv)
+
+        # Save to CSV
         file_name = f"habit_{id}_log.csv"
-        df = df[['id', 'name', 'goal', 'unit', 'log']]
         df.to_csv(file_name, index=False)
         print(f"Habit log saved as '{file_name}'")
