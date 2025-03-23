@@ -2,7 +2,7 @@ import datetime
 import json
 import os
 import pandas as pd
-from utils.file_utils import get_data_file_path
+from src.utils.file_utils import get_data_file_path
 
 EXPENSES_DATA_FILE = get_data_file_path('expenses.json')
 

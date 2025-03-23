@@ -1,6 +1,6 @@
 import json
 import os
-from utils.file_utils import get_data_file_path
+from src.utils.file_utils import get_data_file_path
 
 TODO_DATA_FILE = get_data_file_path('todos.json')
 

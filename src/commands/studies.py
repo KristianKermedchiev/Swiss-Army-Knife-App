@@ -1,7 +1,7 @@
 import json
 import os
 import datetime
-from utils.file_utils import get_data_file_path
+from src.utils.file_utils import get_data_file_path
 
 STUDIES_DATA_FILE = get_data_file_path('studies.json')
 
