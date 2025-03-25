@@ -1,27 +1,11 @@
-import json
-import os
 from src.utils.file_utils import get_data_file_path
+from src.db.db_interface import load_data, save_data
 
 GOAL_DATA_FILE = get_data_file_path('goals.json')
 
-
-def load_goals():
-    """Load goals data from the JSON file."""
-    if os.path.exists(GOAL_DATA_FILE):
-        with open(GOAL_DATA_FILE, 'r') as file:
-            return json.load(file)
-    return []
-
-
-def save_goals(goals):
-    """Save goals data to the JSON file."""
-    with open(GOAL_DATA_FILE, 'w') as file:
-        json.dump(goals, file, indent=4)
-
-
 def check_goal(goal_id):
     """Helper function to check whether we ascend towards a goal or descent."""
-    goals = load_goals()
+    goals = load_data(GOAL_DATA_FILE)
     flag = ''
 
     for goal in goals:
@@ -41,7 +25,7 @@ def make_goal(name, unit, starting_value, end_value, category):
         print("Error: Name, unit, star value, end value and category are required.")
         return
 
-    goals = load_goals()
+    goals = load_data(GOAL_DATA_FILE)
 
     new_id = 1 if not goals else goals[-1]['id'] + 1
 
@@ -57,13 +41,13 @@ def make_goal(name, unit, starting_value, end_value, category):
         'archived': False
     })
 
-    save_goals(goals)
+    save_data(GOAL_DATA_FILE, goals)
     print(f"Goal '{name}' added successfully with ID {new_id}.")
 
 
 def change_goal(goal_id, name=None, unit=None, starting_value=None, end_value=None, category=None):
     """Update an existing goal."""
-    goals = load_goals()
+    goals = load_data(GOAL_DATA_FILE)
 
     for goal in goals:
         if goal["id"] == goal_id:
@@ -78,7 +62,7 @@ def change_goal(goal_id, name=None, unit=None, starting_value=None, end_value=No
             if category is not None:
                 goal["category"] = category
 
-            save_goals(goals)
+            save_data(GOAL_DATA_FILE, goals)
             print(f"Goal with ID {goal_id} updated successfully.")
             return
 
@@ -87,7 +71,7 @@ def change_goal(goal_id, name=None, unit=None, starting_value=None, end_value=No
 
 def list_goals():
     """List goals based on filters."""
-    goals = load_goals()
+    goals = load_data(GOAL_DATA_FILE)
 
     if not goals:
         print("\nNo goals found.")
@@ -119,12 +103,12 @@ def list_goals():
 
 def delete_goal(goal_id):
     """Delete a goal by ID."""
-    goals = load_goals()
+    goals = load_data(GOAL_DATA_FILE)
 
     for goal in goals:
         if goal["id"] == goal_id:
             goals.remove(goal)
-            save_goals(goals)
+            save_data(GOAL_DATA_FILE, goals)
             print(f"Goal with ID {goal_id} deleted successfully.")
             return
 
@@ -133,12 +117,12 @@ def delete_goal(goal_id):
 
 def archive_goal(goal_id):
     """Archive a goal by ID."""
-    goals = load_goals()
+    goals = load_data(GOAL_DATA_FILE)
 
     for goal in goals:
         if goal["id"] == goal_id:
             goal["archived"] = True
-            save_goals(goals)
+            save_data(GOAL_DATA_FILE, goals)
             print(f"Goal with ID {goal_id} archived successfully.")
             return
 
@@ -147,7 +131,7 @@ def archive_goal(goal_id):
 
 def add_goal_progress(goal_id, value):
     """Add progress to an existing goal and update status if complete."""
-    goals = load_goals()
+    goals = load_data(GOAL_DATA_FILE)
 
     for goal in goals:
         if goal["id"] == goal_id:
@@ -167,12 +151,12 @@ def add_goal_progress(goal_id, value):
             if percentage >= 100:
                 goal['status'] = 'Completed'
                 goal["progress"] = end_value if check_goal(goal_id) == 'positive' else end_value
-                save_goals(goals)
+                save_data(GOAL_DATA_FILE, goals)
                 print(f'Progress towards goal with ID {goal["id"]} added successfully.')
                 print(f'Congratulations, you completed the goal "{goal["name"]}"!')
                 return
             else:
-                save_goals(goals)
+                save_data(GOAL_DATA_FILE, goals)
                 print(f'Progress towards goal with ID {goal["id"]} added successfully. Current progress: {round(percentage, 2)}%.')
                 return
 

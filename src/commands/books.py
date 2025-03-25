@@ -1,27 +1,11 @@
-import json
-import os
 from src.utils.file_utils import get_data_file_path
+from src.db.db_interface import load_data, save_data
 
 BOOKS_DATA_FILE = get_data_file_path('books.json')
 
-
-def load_books():
-    """Load books data from the JSON file."""
-    if os.path.exists(BOOKS_DATA_FILE):
-        with open(BOOKS_DATA_FILE, 'r') as file:
-            return json.load(file)
-    return []
-
-
-def save_books(books):
-    """Save books data to the JSON file."""
-    with open(BOOKS_DATA_FILE, 'w') as file:
-        json.dump(books, file, indent=4)
-
-
 def list_books():
     """List all books."""
-    books = load_books()
+    books = load_data(BOOKS_DATA_FILE)
     if not books:
         print("\nNo books found.")
         return
@@ -45,7 +29,7 @@ def make_book(title, category, pages):
         print("Error: Pages are required.")
         return
 
-    books = load_books()
+    books = load_data(BOOKS_DATA_FILE)
 
     new_id = 1 if not books else books[-1]['id'] + 1
 
@@ -60,19 +44,19 @@ def make_book(title, category, pages):
         'rating': 0
     })
 
-    save_books(books)
+    save_data(BOOKS_DATA_FILE, books)
     print(f"Book '{title}' added successfully with ID {new_id}.")
 
 
 def add_progress(book_id, pages):
     """Add progress to a book."""
-    books = load_books()
+    books = load_data(BOOKS_DATA_FILE)
 
     for book in books:
         if book["id"] == book_id:
             book["pages_read"] += int(pages)
             book["progress"] = round((int(book["pages_read"]) / int(book["pages"])) * 100, 2)
-            save_books(books)
+            save_data(BOOKS_DATA_FILE, books)
             print(f'Progress updated successfully for book {book["title"]}, current progress is {book["progress"]}.')
             return
 
@@ -81,7 +65,7 @@ def add_progress(book_id, pages):
 
 def change_status(book_id):
     """Changes the current status of the book to the opposite."""
-    books = load_books()
+    books = load_data(BOOKS_DATA_FILE)
 
     for book in books:
         if book["id"] == book_id:
@@ -89,7 +73,7 @@ def change_status(book_id):
                 book["status"] = "Completed"
             else:
                 book["status"] = "In Progress"
-            save_books(books)
+            save_data(BOOKS_DATA_FILE, books)
             print(f"Book {book['title']}'s status changed to {book['status']}.")
             return
 
@@ -98,12 +82,12 @@ def change_status(book_id):
 
 def add_rating(book_id, rating):
     """Adds a rating to the book from 1 to 5."""
-    books = load_books()
+    books = load_data(BOOKS_DATA_FILE)
 
     for book in books:
         if book["id"] == book_id:
             book["rating"] = rating
-            save_books(books)
+            save_data(BOOKS_DATA_FILE, books)
             print(f"Rating updated successfully for book {book['title']}.")
             return
 
@@ -112,7 +96,7 @@ def add_rating(book_id, rating):
 
 def change_book(book_id, title, category, pages):
     """Update an existing book."""
-    books = load_books()
+    books = load_data(BOOKS_DATA_FILE)
 
     for book in books:
         if book["id"] == book_id:
@@ -123,7 +107,7 @@ def change_book(book_id, title, category, pages):
             if pages is not None:
                 book["pages"] = pages
 
-            save_books(books)
+            save_data(BOOKS_DATA_FILE, books)
             print(f"Book with ID {book_id} updated successfully.")
             return
 
@@ -132,12 +116,12 @@ def change_book(book_id, title, category, pages):
 
 def delete_book(book_id):
     """Delete a book by ID."""
-    books = load_books()
+    books = load_data(BOOKS_DATA_FILE)
 
     for book in books:
         if book["id"] == book_id:
             books.remove(book)
-            save_books(books)
+            save_data(BOOKS_DATA_FILE, books)
             print(f"Book with ID {book_id} deleted successfully.")
             return
 

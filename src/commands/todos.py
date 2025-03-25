@@ -1,27 +1,11 @@
-import json
-import os
 from src.utils.file_utils import get_data_file_path
+from src.db.db_interface import load_data, save_data
 
 TODO_DATA_FILE = get_data_file_path('todos.json')
 
-
-def load_todos():
-    """Load todos data from the JSON file."""
-    if os.path.exists(TODO_DATA_FILE):
-        with open(TODO_DATA_FILE, 'r') as file:
-            return json.load(file)
-    return []
-
-
-def save_todos(todos):
-    """Save todos data to the JSON file."""
-    with open(TODO_DATA_FILE, 'w') as file:
-        json.dump(todos, file, indent=4)
-
-
 def list_todos():
     """List all todos."""
-    todos = load_todos()
+    todos = load_data(TODO_DATA_FILE)
     if not todos:
         print("\nNo todos found.")
         return
@@ -40,7 +24,7 @@ def make_todo(description, due_date=None):
     if due_date is None:
         due_date = "No due date"
 
-    todos = load_todos()
+    todos = load_data(TODO_DATA_FILE)
 
     new_id = 1 if not todos else todos[-1]['id'] + 1
 
@@ -51,13 +35,13 @@ def make_todo(description, due_date=None):
         'status': "incomplete"
     })
 
-    save_todos(todos)
+    save_data(TODO_DATA_FILE, todos)
     print(f"Todo '{description}' added successfully with ID {new_id}.")
 
 
 def change_todo(todo_id, description=None, due_date=None, status=None):
     """Update an existing todo."""
-    todos = load_todos()
+    todos = load_data(TODO_DATA_FILE)
 
     for todo in todos:
         if todo["id"] == todo_id:
@@ -68,7 +52,7 @@ def change_todo(todo_id, description=None, due_date=None, status=None):
             if status is not None:
                 todo["status"] = status
 
-            save_todos(todos)
+            save_data(TODO_DATA_FILE, todos)
             print(f"Todo with ID {todo_id} updated successfully.")
             return
 
@@ -77,12 +61,12 @@ def change_todo(todo_id, description=None, due_date=None, status=None):
 
 def delete_todo(todo_id):
     """Delete a todo by ID."""
-    todos = load_todos()
+    todos = load_data(TODO_DATA_FILE)
 
     for todo in todos:
         if todo["id"] == todo_id:
             todos.remove(todo)
-            save_todos(todos)
+            save_data(TODO_DATA_FILE, todos)
             print(f"Todo with ID {todo_id} deleted successfully.")
             return
 

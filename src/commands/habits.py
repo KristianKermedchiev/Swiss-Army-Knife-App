@@ -1,25 +1,9 @@
-import json
-import os
 import datetime
 import pandas as pd
 from src.utils.file_utils import get_data_file_path
+from src.db.db_interface import load_data, save_data
 
 HABITS_DATA_FILE = get_data_file_path('habits.json')
-
-
-def load_habits():
-    """Load habits data from the JSON file."""
-    if os.path.exists(HABITS_DATA_FILE):
-        with open(HABITS_DATA_FILE, 'r') as file:
-            return json.load(file)
-    return []
-
-
-def save_habits(habits):
-    """Save habits data to the JSON file."""
-    with open(HABITS_DATA_FILE, 'w') as file:
-        json.dump(habits, file, indent=4)
-
 
 def make_habit(name, goal, unit):
     """Create a new habit."""
@@ -28,7 +12,7 @@ def make_habit(name, goal, unit):
         print("Error: Name, goal and unit are required.")
         return
 
-    habits = load_habits()
+    habits = load_data(HABITS_DATA_FILE)
     new_id = 1 if not habits else habits[-1]['id'] + 1
 
     habits.append({
@@ -38,19 +22,19 @@ def make_habit(name, goal, unit):
         'unit': unit,
         'log': []
     })
-    save_habits(habits)
+    save_data(HABITS_DATA_FILE, habits)
     print(f"Habit '{name}' added successfully with ID {new_id}.")
 
 
 def mark_habit(id):
     """Mark a habit as completed for the day."""
-    habits = load_habits()
+    habits = load_data(HABITS_DATA_FILE)
     today = datetime.datetime.now().strftime('%d/%m/%Y')
 
     for habit in habits:
         if habit['id'] == id:
             habit['log'].append({'date': today, 'completed': "completed"})
-            save_habits(habits)
+            save_data(HABITS_DATA_FILE, habits)
             print(f"Habit '{habit['name']}' marked as completed.")
             return
     print("Error: Habit not found.")
@@ -58,7 +42,7 @@ def mark_habit(id):
 
 def list_habits(date=None, id=None):
     """List habits based on filters."""
-    habits = load_habits()
+    habits = load_data(HABITS_DATA_FILE)
 
     if id:
         habit = next((h for h in habits if h['id'] == id), None)
@@ -93,15 +77,15 @@ def delete_habit(id):
         print("Error: Habit ID is required.")
         return
 
-    habits = load_habits()
+    habits = load_data(HABITS_DATA_FILE)
     habits = [habit for habit in habits if habit['id'] != id]
-    save_habits(habits)
+    save_data(HABITS_DATA_FILE, habits)
     print(f"Habit with ID {id} deleted successfully.")
 
 
 def change_habit(id, name=None, goal=None, unit=None):
     """Modify a habit's properties."""
-    habits = load_habits()
+    habits = load_data(HABITS_DATA_FILE)
     for habit in habits:
         if habit['id'] == id:
             if name:
@@ -110,7 +94,7 @@ def change_habit(id, name=None, goal=None, unit=None):
                 habit['goal'] = goal
             if unit:
                 habit['unit'] = unit
-            save_habits(habits)
+            save_data(HABITS_DATA_FILE, habits)
             print(f"Habit ID {id} updated successfully.")
             return
     print("Error: Habit not found.")
@@ -118,7 +102,7 @@ def change_habit(id, name=None, goal=None, unit=None):
 
 def habit_log(id, download=False):
     """Check current and longest streak of a habit."""
-    habits = load_habits()
+    habits = load_data(HABITS_DATA_FILE)
     habit = next((h for h in habits if h['id'] == id), None)
 
     if not habit:

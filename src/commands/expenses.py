@@ -1,29 +1,13 @@
 import datetime
-import json
-import os
 import pandas as pd
 from src.utils.file_utils import get_data_file_path
+from src.db.db_interface import load_data, save_data
 
 EXPENSES_DATA_FILE = get_data_file_path('expenses.json')
 
-
-def load_expenses():
-    """Load expenses data from the JSON file."""
-    if os.path.exists(EXPENSES_DATA_FILE):
-        with open(EXPENSES_DATA_FILE, 'r') as file:
-            return json.load(file)
-    return []
-
-
-def save_expenses(data):
-    """Save expenses data to the JSON file."""
-    with open(EXPENSES_DATA_FILE, 'w') as file:
-        json.dump(data, file, indent=4)
-
-
 def list_expenses():
     """List all expenses with date, description, and amount."""
-    expenses = load_expenses()
+    expenses = load_data(EXPENSES_DATA_FILE)
     if not expenses:
         print("\nNo expenses found.")
         return
@@ -46,7 +30,7 @@ def make_expense(description=None, amount=None, date=None, category=None):
     if date is None:
         date = datetime.datetime.now().strftime('%d/%m/%Y')
 
-    expenses = load_expenses()
+    expenses = load_data(EXPENSES_DATA_FILE)
 
     new_id = 1 if not expenses else expenses[-1]['id'] + 1
 
@@ -58,7 +42,7 @@ def make_expense(description=None, amount=None, date=None, category=None):
         'category': category
     })
 
-    save_expenses(expenses)
+    save_data(EXPENSES_DATA_FILE, expenses)
 
     print(f"Expense '{description}' with amount {amount} in category {category} was added successfully with ID {new_id}.")
 
@@ -69,7 +53,7 @@ def change_expense(expense_id=None, description=None, amount=None, date=None, ca
         print("Error: Expense ID is required.")
         return
 
-    expenses = load_expenses()
+    expenses = load_data(EXPENSES_DATA_FILE)
 
     for expense in expenses:
         if expense["id"] == expense_id:
@@ -82,7 +66,7 @@ def change_expense(expense_id=None, description=None, amount=None, date=None, ca
             if category:
                 expense["category"] = category
 
-            save_expenses(expenses)
+            save_data(EXPENSES_DATA_FILE, expenses)
 
             print(f"Expense with ID {expense_id} updated successfully.")
             return
@@ -92,12 +76,12 @@ def change_expense(expense_id=None, description=None, amount=None, date=None, ca
 
 def delete_expense(expense_id):
     """Delete an expense by ID."""
-    expenses = load_expenses()
+    expenses = load_data(EXPENSES_DATA_FILE)
 
     for expense in expenses:
         if expense["id"] == expense_id:
             expenses.remove(expense)
-            save_expenses(expenses)
+            save_data(EXPENSES_DATA_FILE, expenses)
             print(f"Expense with ID {expense_id} deleted successfully.")
             return
 
@@ -106,7 +90,7 @@ def delete_expense(expense_id):
 
 def expense_log(start_date=None, end_date=None, category=None, download=False):
     """Generate an expense log based on filters and optionally export to CSV."""
-    expenses = load_expenses()
+    expenses = load_data(EXPENSES_DATA_FILE)
 
     if not start_date and not end_date and not category:
         print("Error: At least one filter (start_date, end_date, or category) must be provided.")

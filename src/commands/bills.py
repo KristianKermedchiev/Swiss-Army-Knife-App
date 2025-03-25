@@ -1,26 +1,11 @@
-import json
-import os
 from src.utils.file_utils import get_data_file_path
+from src.db.db_interface import load_data, save_data
 
 BILL_DATA_FILE = get_data_file_path('bills.json')
 
-def load_bills():
-    """Load bills data from the JSON file."""
-    if os.path.exists(BILL_DATA_FILE):
-        with open(BILL_DATA_FILE, 'r') as file:
-            return json.load(file)
-    return []
-
-
-def save_bills(bills):
-    """Save bills data to the JSON file."""
-    with open(BILL_DATA_FILE, 'w') as file:
-        json.dump(bills, file, indent=4)
-
-
 def list_bills():
     """List all bills."""
-    bills = load_bills()
+    bills = load_data(BILL_DATA_FILE)
     if not bills:
         print("\nNo bills found.")
         return
@@ -40,7 +25,7 @@ def make_bill(description, price):
         print("Error: Price is required.")
         return
 
-    bills = load_bills()
+    bills = load_data(BILL_DATA_FILE)
 
     new_id = 1 if not bills else bills[-1]['id'] + 1
 
@@ -50,13 +35,13 @@ def make_bill(description, price):
         'price': price
     })
 
-    save_bills(bills)
+    save_data(BILL_DATA_FILE, bills)
     print(f"Bill '{description}' added successfully with ID {new_id}.")
 
 
 def change_bill(bill_id, description=None, price=None):
     """Update an existing bill."""
-    bills = load_bills()
+    bills = load_data(BILL_DATA_FILE)
 
     for bill in bills:
         if bill["id"] == bill_id:
@@ -65,7 +50,7 @@ def change_bill(bill_id, description=None, price=None):
             if price is not None:
                 bill["price"] = price
 
-            save_bills(bills)
+            save_data(BILL_DATA_FILE, bills)
             print(f"Bill with ID {bill_id} updated successfully.")
             return
 
@@ -74,12 +59,12 @@ def change_bill(bill_id, description=None, price=None):
 
 def delete_bill(bill_id):
     """Delete a bill by ID."""
-    bills = load_bills()
+    bills = load_data(BILL_DATA_FILE)
 
     for bill in bills:
         if bill["id"] == bill_id:
             bills.remove(bill)
-            save_bills(bills)
+            save_data(BILL_DATA_FILE, bills)
             print(f"Bill with ID {bill_id} deleted successfully.")
             return
 

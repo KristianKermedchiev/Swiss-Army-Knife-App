@@ -1,24 +1,8 @@
-import json
-import os
 import datetime
 from src.utils.file_utils import get_data_file_path
+from src.db.db_interface import load_data, save_data
 
 STUDIES_DATA_FILE = get_data_file_path('studies.json')
-
-
-def load_studies():
-    """Load studies data from the JSON file."""
-    if os.path.exists(STUDIES_DATA_FILE):
-        with open(STUDIES_DATA_FILE, 'r') as file:
-            return json.load(file)
-    return []
-
-
-def save_studies(data):
-    """Save studies data to the JSON file."""
-    with open(STUDIES_DATA_FILE, 'w') as file:
-        json.dump(data, file, indent=4)
-
 
 def make_study(name, category):
     """Create a new study."""
@@ -27,7 +11,7 @@ def make_study(name, category):
         print("Error: Name and category are required.")
         return
 
-    studies = load_studies()
+    studies = load_data(STUDIES_DATA_FILE)
 
     new_id = 1 if not studies else studies[-1]['id'] + 1
 
@@ -39,7 +23,7 @@ def make_study(name, category):
         'status': 'In Progress',
     })
 
-    save_studies(studies)
+    save_data(STUDIES_DATA_FILE, studies)
 
     print(
         f"Study '{name}' in category {category} was added successfully with ID {new_id}.")
@@ -51,7 +35,7 @@ def change_study(study_id=None, name=None, category=None):
         print("Error: Study ID is required.")
         return
 
-    studies = load_studies()
+    studies = load_data(STUDIES_DATA_FILE)
 
     for study in studies:
         if study["id"] == study_id:
@@ -60,7 +44,7 @@ def change_study(study_id=None, name=None, category=None):
             if category:
                 study["category"] = category
 
-            save_studies(studies)
+            save_data(STUDIES_DATA_FILE, studies)
 
             print(f"Study with ID {study_id} updated successfully.")
             return
@@ -70,7 +54,7 @@ def change_study(study_id=None, name=None, category=None):
 
 def delete_study(study_id=None):
     """Delete a study by ID."""
-    studies = load_studies()
+    studies = load_data(STUDIES_DATA_FILE)
 
     if study_id is None:
         print("Error: Study ID is required.")
@@ -79,7 +63,7 @@ def delete_study(study_id=None):
     for study in studies:
         if study["id"] == study_id:
             studies.remove(study)
-            save_studies(studies)
+            save_data(STUDIES_DATA_FILE, studies)
             print(f"Study with ID {study_id} deleted successfully.")
             return
 
@@ -91,7 +75,7 @@ def list_studies(study_id=None):
     List all studies.
     Usage: lsstudies [-id <id>]
     """
-    studies = load_studies()
+    studies = load_data(STUDIES_DATA_FILE)
     if not studies:
         print("\nNo studies found.")
         return
@@ -114,14 +98,14 @@ def list_studies(study_id=None):
 
 def mark_study_completed(study_id=None):
     """Mark a study as completed."""
-    studies = load_studies()
+    studies = load_data(STUDIES_DATA_FILE)
     for study in studies:
         if study["id"] == study_id:
             if study['status'] == 'Completed':
                 print(f"Study with ID {study_id} is already completed.")
                 return
             study['status'] = 'Completed'
-            save_studies(studies)
+            save_data(STUDIES_DATA_FILE, studies)
             print(f"Study with ID {study_id} marked as completed successfully.")
             return
 
@@ -131,7 +115,7 @@ def mark_study_completed(study_id=None):
 def log_study(study_id=None, name=None, date=None):
     """Log a study topic."""
 
-    studies = load_studies()
+    studies = load_data(STUDIES_DATA_FILE)
     today = datetime.datetime.now().strftime('%d/%m/%Y')
 
     for study in studies:
@@ -139,7 +123,7 @@ def log_study(study_id=None, name=None, date=None):
             if name:
                 date = date or today
                 study["topics"].append({'date': date, 'name': name})
-                save_studies(studies)
+                save_data(STUDIES_DATA_FILE, studies)
                 print(f"Topic '{name}' logged for study {study_id}.")
                 return
             else:
