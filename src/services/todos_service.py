@@ -2,14 +2,9 @@ import shlex
 from src.commands.todos import make_todo, list_todos, change_todo, delete_todo
 
 def lstodos(arg):
-    """List all todos."""
     list_todos()
 
 def mktodo(arg):
-    """
-            Create a new todo.
-            Usage: mktodo -description <description> [-duedate <due_date>]
-            """
     try:
         args = shlex.split(arg)
         description = None
@@ -28,10 +23,6 @@ def mktodo(arg):
         print("Error: Invalid arguments. Usage: mktodo -description <description> [-duedate <due_date>]")
 
 def chtodo(arg):
-    """
-            Modify an existing todo.
-            Usage: chtodo -id <id> [-description <description>] [-duedate <due_date>] [-status <status>]
-            """
     try:
         args = shlex.split(arg)
         todo_id = None
@@ -57,10 +48,6 @@ def chtodo(arg):
             "Error: Invalid arguments. Usage: chtodo -id <id> [-description <description>] [-duedate <due_date>]")
 
 def rmtodo(arg):
-    """
-            Remove a todo by ID.
-            Usage: deltodo -id <id>
-            """
     try:
         args = shlex.split(arg)
         todo_id = None

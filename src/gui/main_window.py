@@ -12,12 +12,10 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Swiss-Army-Knife-App-GUI")
-        self.setGeometry(100, 100, 800, 600)
+        self.setGeometry(100, 100, 1000, 600)
 
-        # Create a tab widget to hold the tabs
         self.tab_widget = QTabWidget()
 
-        # Add the different modules as tabs
         self.bills_tab = BillsTab()
         self.tab_widget.addTab(self.bills_tab, "Bills")
 
@@ -41,29 +39,69 @@ class MainWindow(QMainWindow):
 
         # Set styling
         self.setStyleSheet("""
-                    QMainWindow {
-                        background-color: #f0f0f0;
-                    }
-                    QTabWidget::pane {
-                        border: 1px solid #c0c0c0;
-                        border-radius: 10px;
-                    }
-                    QTabBar::tab {
-                        background-color: #333;
-                        color: white;
-                        padding: 10px;
-                        border-radius: 5px;
-                        margin: 5px;
-                    }
-                    QTabBar::tab:selected {
-                        background-color: #007BFF;
-                        color: white;
-                    }
-                    QTabWidget {
-                        background-color: #ffffff;
-                        border-radius: 10px;
-                    }
-                """)
+            /* Main Window Background */
+            QMainWindow {
+                background-color: #f0f4f8;
+                font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+            }
+
+            /* Tab Widget Pane */
+            QTabWidget::pane {
+                border: 1px solid #e1e4e8;
+                border-radius: 10px;
+                background-color: #ffffff;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            /* Tab Bar Styling */
+            QTabBar::tab {
+                background-color: #2c3e50;
+                color: #ffffff;
+                padding: 10px 15px;
+                border-radius: 6px;
+                margin: 5px;
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                min-width: 100px;
+                transition: background-color 0.3s ease;
+            }
+
+            QTabBar::tab:hover {
+                background-color: #34495e;
+            }
+
+            QTabBar::tab:selected {
+                background-color: #3498db;
+                color: white;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+
+            /* Tab Widget Overall */
+            QTabWidget {
+                background-color: transparent;
+                border-radius: 10px;
+            }
+
+            /* Scrollable Tabs Styling */
+            QTabBar::scroller {
+                width: 20px;
+            }
+
+            QTabBar QToolButton {
+                background-color: #f0f4f8;
+                border: 1px solid #e1e4e8;
+                border-radius: 4px;
+            }
+
+            QTabBar QToolButton::left-arrow {
+                image: url(:/qt-project.org/styles/commonstyle/images/left-32.png);
+            }
+
+            QTabBar QToolButton::right-arrow {
+                image: url(:/qt-project.org/styles/commonstyle/images/right-32.png);
+            }
+        """)
 
         self.setCentralWidget(self.tab_widget)
 

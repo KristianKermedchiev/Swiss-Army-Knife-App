@@ -41,15 +41,28 @@ class TodoAppCLI(cmd.Cmd):
 
     #Todo commands
     def do_lstodos(self, arg):
+        """List all todos."""
         lstodos(arg)
 
     def do_mktodo(self, arg):
+        """
+        Create a new todo.
+        Usage: mktodo -description <description> [-duedate <due_date> format dd/mm/yyyy]
+        """
         mktodo(arg)
 
     def do_chtodo(self, arg):
+        """
+        Modify an existing todo.
+        Usage: chtodo -id <id> [-description <description>] [-duedate <due_date>] [-status <status>]
+        """
         chtodo(arg)
 
     def do_rmtodo(self, arg):
+        """
+        Remove a todo by ID.
+        Usage: deltodo -id <id>
+        """
         rmtodo(arg)
 
     #Bills commands
