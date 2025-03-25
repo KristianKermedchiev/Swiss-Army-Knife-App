@@ -11,7 +11,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Expense Tracker")
+        self.setWindowTitle("Swiss-Army-Knife-App-GUI")
         self.setGeometry(100, 100, 800, 600)
 
         # Create a tab widget to hold the tabs
@@ -20,6 +20,9 @@ class MainWindow(QMainWindow):
         # Add the different modules as tabs
         self.bills_tab = BillsTab()
         self.tab_widget.addTab(self.bills_tab, "Bills")
+
+        self.books_tab = BooksTab()
+        self.tab_widget.addTab(self.books_tab, "Books")
 
         self.expenses_tab = ExpensesTab()
         self.tab_widget.addTab(self.expenses_tab, "Expenses")
@@ -30,14 +33,37 @@ class MainWindow(QMainWindow):
         self.habits_tab = HabitsTab()
         self.tab_widget.addTab(self.habits_tab, "Habits")
 
-        self.books_tab = BooksTab()
-        self.tab_widget.addTab(self.books_tab, "Books")
-
         self.studies_tab = StudiesTab()
         self.tab_widget.addTab(self.studies_tab, "Studies")
 
         self.todos_tab = TodosTab()
         self.tab_widget.addTab(self.todos_tab, "Todos")
+
+        # Set styling
+        self.setStyleSheet("""
+                    QMainWindow {
+                        background-color: #f0f0f0;
+                    }
+                    QTabWidget::pane {
+                        border: 1px solid #c0c0c0;
+                        border-radius: 10px;
+                    }
+                    QTabBar::tab {
+                        background-color: #333;
+                        color: white;
+                        padding: 10px;
+                        border-radius: 5px;
+                        margin: 5px;
+                    }
+                    QTabBar::tab:selected {
+                        background-color: #007BFF;
+                        color: white;
+                    }
+                    QTabWidget {
+                        background-color: #ffffff;
+                        border-radius: 10px;
+                    }
+                """)
 
         self.setCentralWidget(self.tab_widget)
 
