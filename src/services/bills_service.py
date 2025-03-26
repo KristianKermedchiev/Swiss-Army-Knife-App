@@ -2,41 +2,36 @@ import shlex
 from src.commands.bills import make_bill, list_bills, change_bill, delete_bill
 
 def lsbills(arg):
-    """List all bills."""
     list_bills()
 
 def mkbill(arg):
-    """
-            Create a new bill.
-            Usage: mkbill -description <description> -price <price>
-            """
     try:
         args = shlex.split(arg)
         description = None
         price = None
+        date = None
 
         if "-description" in args:
             description = args[args.index("-description") + 1]
         if "-price" in args:
             price = args[args.index("-price") + 1]
+        if "-date" in args:
+            date = args[args.index("-date") + 1]
 
-        if description and price:
-            make_bill(description, price)
+        if description and price and date:
+            make_bill(description, price, date)
         else:
-            print("Error: -description and -price are required.")
+            print("Error: -description, -price and -date are required.")
     except (ValueError, IndexError) as e:
-        print("Error: Invalid arguments. Usage: mktodo -description <description> -price <price>")
+        print("Error: Invalid arguments. Usage: mkbill -description <description> -price <price> -date <date>")
 
 def chbill(arg):
-    """
-            Modify an existing bill.
-            Usage: chbill -id <id> [-description <description>] [-price <price>]
-            """
     try:
         args = shlex.split(arg)
         bill_id = None
         description = None
         price = None
+        date = None
 
         if "-id" in args:
             bill_id = int(args[args.index("-id") + 1])
@@ -44,20 +39,18 @@ def chbill(arg):
             description = args[args.index("-description") + 1]
         if "-price" in args:
             price = args[args.index("-price") + 1]
+        if "-date" in args:
+            date = args[args.index("-date") + 1]
 
         if bill_id is not None:
-            change_bill(bill_id, description, price)
+            change_bill(bill_id, description, price, date)
         else:
             print("Error: -id is required.")
     except (ValueError, IndexError) as e:
         print(
-            "Error: Invalid arguments. Usage: chbill -id <id> [-description <description>] [-price <price>]")
+            "Error: Invalid arguments. Usage: chbill -id <id> [-description <description>] [-price <price>] [-date <date>]")
 
 def rmbill(arg):
-    """
-            Remove a bill by ID.
-            Usage: rmbill -id <id>
-            """
     try:
         args = shlex.split(arg)
         bill_id = None

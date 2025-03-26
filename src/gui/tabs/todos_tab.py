@@ -21,7 +21,6 @@ class TodosTab(BaseTab):
         self.list_button.clicked.connect(self.list_data)
         self.filter_layout.addWidget(self.list_button)
 
-        # Create a widget to hold the filter layout
         filter_widget = QWidget()
         filter_widget.setLayout(self.filter_layout)
         filter_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -34,6 +33,7 @@ class TodosTab(BaseTab):
 
         self.apply_styles()
         self.list_data()
+
     def list_data(self):
         todos = load_data(TODO_DATA_FILE)
 
@@ -58,15 +58,6 @@ class TodosTab(BaseTab):
         header = self.data_table.horizontalHeader()
         header.setStretchLastSection(True)
         header.setSectionResizeMode(QHeaderView.Stretch)
-
-    def adjust_filter_width(self):
-        """Adjust the width of filter components based on table width."""
-        table_width = self.data_table.viewport().width()
-        print(f"Viewport width: {table_width}")
-        print(f"Table width: {self.data_table.width()}")
-
-        self.category_combo.setFixedWidth(table_width // 2 - 10)
-        self.list_button.setFixedWidth(table_width // 2 - 10)
 
     def filter_data(self, todos, selected_category):
         """Filters the todos based on category."""

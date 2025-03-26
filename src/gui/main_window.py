@@ -37,7 +37,6 @@ class MainWindow(QMainWindow):
         self.todos_tab = TodosTab()
         self.tab_widget.addTab(self.todos_tab, "Todos")
 
-        # Set styling
         self.setStyleSheet("""
             /* Main Window Background */
             QMainWindow {

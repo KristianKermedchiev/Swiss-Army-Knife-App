@@ -47,14 +47,14 @@ class TodoAppCLI(cmd.Cmd):
     def do_mktodo(self, arg):
         """
         Create a new todo.
-        Usage: mktodo -description <description> [-duedate <due_date> format dd/mm/yyyy]
+        Usage: mktodo -description <description> [-duedate <due_date>] (format dd/mm/yyyy)
         """
         mktodo(arg)
 
     def do_chtodo(self, arg):
         """
         Modify an existing todo.
-        Usage: chtodo -id <id> [-description <description>] [-duedate <due_date>] [-status <status>]
+        Usage: chtodo -id <id> [-description <description>] [-duedate <due_date>] (format dd/mm/yyyy) [-status <status>]
         """
         chtodo(arg)
 
@@ -67,15 +67,28 @@ class TodoAppCLI(cmd.Cmd):
 
     #Bills commands
     def do_lsbills(self, arg):
+        """List all bills."""
         lsbills(arg)
 
     def do_mkbill(self, arg):
+        """
+        Create a new bill.
+        Usage: mkbill -description <description> -price <price> -date <date> (format dd/mm/yyyy)
+        """
         mkbill(arg)
 
     def do_chbill(self, arg):
+        """
+        Modify an existing bill.
+        Usage: chbill -id <id> [-description <description>] [-price <price>] [-date <date>] (format dd/mm/yyyy)
+        """
         chbill(arg)
 
     def do_rmbill(self, arg):
+        """
+        Remove a bill by ID.
+        Usage: rmbill -id <id>
+        """
         rmbill(arg)
 
     #Books commands

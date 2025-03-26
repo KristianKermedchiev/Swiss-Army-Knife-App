@@ -15,7 +15,7 @@ def list_bills():
         print(f"id: {bill['id']} / description: {bill['description']} / price: {bill['price']}")
 
 
-def make_bill(description, price):
+def make_bill(description, price, date):
     """Create a new bill."""
     if description is None:
         print("Error: Description is required.")
@@ -25,6 +25,10 @@ def make_bill(description, price):
         print("Error: Price is required.")
         return
 
+    if date is None:
+        print("Error: Date is required.")
+        return
+
     bills = load_data(BILL_DATA_FILE)
 
     new_id = 1 if not bills else bills[-1]['id'] + 1
@@ -32,14 +36,15 @@ def make_bill(description, price):
     bills.append({
         'id': new_id,
         'description': description,
-        'price': price
+        'price': price,
+        'date': date,
     })
 
     save_data(BILL_DATA_FILE, bills)
     print(f"Bill '{description}' added successfully with ID {new_id}.")
 
 
-def change_bill(bill_id, description=None, price=None):
+def change_bill(bill_id, description=None, price=None, date=None):
     """Update an existing bill."""
     bills = load_data(BILL_DATA_FILE)
 
@@ -49,6 +54,8 @@ def change_bill(bill_id, description=None, price=None):
                 bill["description"] = description
             if price is not None:
                 bill["price"] = price
+            if date is not None:
+                bill["date"] = date
 
             save_data(BILL_DATA_FILE, bills)
             print(f"Bill with ID {bill_id} updated successfully.")
