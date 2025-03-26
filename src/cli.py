@@ -14,13 +14,13 @@ class TodoAppCLI(cmd.Cmd):
     prompt = "(CLI) "
 
     categories = {
-        "Expenses": ["lsexpenses", "mkexpense", "chexpense", "delexpense", "expenselog"],
-        "Todo": ["lstodos", "mktodo", "chtodo", "deltodo"],
         "Bills": ["lsbills", "mkbill", "chbill", "delbill"],
         "Books": ["lsbooks", "mkbook", "chbook", "addbookrating", "addbookprogress", "chbookstatus", "rmbook"],
-        "Habits": ["lshabits", "mkhabit", "chhabit", "rmhabit", "habitlog", "markhabit"],
+        "Expenses": ["lsexpenses", "mkexpense", "chexpense", "delexpense", "expenselog"],
         "Goals": ["lsgoals", 'mkgoal', 'chgoal', 'rmgoal', 'archivegoal', 'addgoalprogress'],
-        "Studies": ["lsstudies", "mkstudy", "chstudy", "rmstudy", "logstudy", "markstudycomplete"]
+        "Habits": ["lshabits", "mkhabit", "chhabit", "rmhabit", "habitlog", "markhabit"],
+        "Studies": ["lsstudies", "mkstudy", "chstudy", "rmstudy", "logstudy", "markstudycomplete"],
+        "Todo": ["lstodos", "mktodo", "chtodo", "deltodo"],
     }
 
     #Expense commands
@@ -93,24 +93,49 @@ class TodoAppCLI(cmd.Cmd):
 
     #Books commands
     def do_lsbooks(self, arg):
+        """List all books."""
         lsbooks(arg)
 
     def do_mkbook(self, arg):
+        """
+        Create a new book.
+        Usage: mkbook -title <title> -genre <genre> -pages <pages>
+        """
         mkbook(arg)
 
     def do_chbook(self, arg):
+        """
+        Modify an existing book.
+        Usage: chbook -id <id> [-title <title>] [-genre <genre>] [-pages <pages>]
+        """
         chbook(arg)
 
     def do_addbookrating(self, arg):
+        """
+        Add rating to an existing book.
+        Usage: addbookrating -id <id> -rating (1-5)
+        """
         addbookrating(arg)
 
     def do_chbookstatus(self, arg):
+        """
+        Change the status of an existing book to the opposite one.
+        Usage: chbookstatus -id <id>
+        """
         chbookstatus(arg)
 
     def do_addbookprogress(self, arg):
+        """
+        Add progress to an existing book.
+        Usage: addbookprogress -id <id> -pages <pages>
+        """
         addbookprogress(arg)
 
     def do_rmbook(self, arg):
+        """
+        Remove a book by ID.
+        Usage: rmbook -id <id>
+        """
         rmbook(arg)
 
     # Habit commands

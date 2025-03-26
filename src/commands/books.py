@@ -11,18 +11,18 @@ def list_books():
         return
 
     for book in books:
-        print(f"id: {book['id']} / title: {book['title']} / category: {book['category']} / progress: {book['progress']}"
+        print(f"id: {book['id']} / title: {book['title']} / genre: {book['genre']} / progress: {book['progress']}"
               f" / status: {book['status']} / rating: {book['rating']} ")
 
 
-def make_book(title, category, pages):
+def make_book(title, genre, pages):
     """Create a new book."""
     if title is None:
         print("Error: Title is required.")
         return
 
-    if category is None:
-        print("Error: Category is required.")
+    if genre is None:
+        print("Error: genre is required.")
         return
 
     if pages is None:
@@ -36,7 +36,7 @@ def make_book(title, category, pages):
     books.append({
         'id': new_id,
         'title': title,
-        'category': category,
+        'genre': genre,
         'pages': pages,
         'pages_read': 0,
         'progress': 0,
@@ -84,6 +84,9 @@ def add_rating(book_id, rating):
     """Adds a rating to the book from 1 to 5."""
     books = load_data(BOOKS_DATA_FILE)
 
+    if int(rating) < 1 or int(rating) > 5:
+        print("Error: Invalid rating. Usage: addbookrating -id <id> -rating (1-5)")
+
     for book in books:
         if book["id"] == book_id:
             book["rating"] = rating
@@ -94,7 +97,7 @@ def add_rating(book_id, rating):
     print(f"Error: Book with ID {book_id} not found.")
 
 
-def change_book(book_id, title, category, pages):
+def change_book(book_id, title, genre, pages):
     """Update an existing book."""
     books = load_data(BOOKS_DATA_FILE)
 
@@ -102,8 +105,8 @@ def change_book(book_id, title, category, pages):
         if book["id"] == book_id:
             if title is not None:
                 book["title"] = title
-            if category is not None:
-                book["category"] = category
+            if genre is not None:
+                book["genre"] = genre
             if pages is not None:
                 book["pages"] = pages
 
