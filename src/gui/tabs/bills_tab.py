@@ -17,8 +17,6 @@ class BillsTab(BaseTab):
         self.year_combo.addItem("2027")
         self.year_combo.addItem("2026")
         self.year_combo.addItem("2025")
-        self.year_combo.addItem("2024")
-        self.year_combo.addItem("2023")
         # Add more years as needed
         self.year_combo.setCurrentText("All")  # Set default to All
         self.filter_layout.addWidget(self.year_combo)

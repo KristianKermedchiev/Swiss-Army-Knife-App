@@ -140,21 +140,45 @@ class TodoAppCLI(cmd.Cmd):
 
     # Habit commands
     def do_lshabits(self, arg):
+        """
+        List all habits, or filter by ID or date.
+        Usage: lshabits [-id <id>] [-date <date>]
+        """
         lshabits(arg)
 
     def do_mkhabit(self, arg):
+        """
+        Create a new habit.
+        Usage: mkhabit -name <habit_name> -goal <goal> -unit <liters/km/pages>
+        """
         mkhabit(arg)
 
     def do_chhabit(self, arg):
+        """
+        Update an existing habit.
+        Usage: chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]
+        """
         chhabit(arg)
 
     def do_rmhabit(self, arg):
+        """
+        Remove a habit by ID.
+        Usage: rmhabit -id <id>
+        """
         rmhabit(arg)
 
     def do_habitlog(self, arg):
+        """
+        Check the streak of a habit by providing its ID.
+        Usage: habitlog -id <id> [-download]
+        """
         habitlog(arg)
 
     def do_markhabit(self, arg):
+        """
+        Mark a habit as completed for today.
+        Usage: markhabit -id <id>
+        """
         markhabit(arg)
 
     # Goal commands

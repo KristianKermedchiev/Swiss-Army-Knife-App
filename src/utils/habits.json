@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "name": "wakingUp",
+        "goal": "everyday",
+        "unit": "6AM",
+        "log": [
+            {
+                "date": "25/03/2025",
+                "completed": "completed"
+            },
+            {
+                "date": "26/03/2025",
+                "completed": "completed"
+            },
+            {
+                "date": "27/03/2025",
+                "completed": "completed"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "name": "running",
+        "goal": "everyTuesday",
+        "unit": "10KM",
+        "log": [
+            {
+                "date": "25/03/2025",
+                "completed": "completed"
+            }
+        ]
+    }
+]

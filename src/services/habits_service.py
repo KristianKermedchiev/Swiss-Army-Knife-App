@@ -2,10 +2,6 @@ import shlex
 from src.commands.habits import make_habit, list_habits, change_habit, delete_habit, habit_log, mark_habit
 
 def lshabits(arg):
-    """
-            List all habits, or filter by ID or date.
-            Usage: lshabits [-id <id>] [-date <date>]
-            """
     try:
         args = shlex.split(arg)
         habit_id = None
@@ -22,10 +18,6 @@ def lshabits(arg):
         print("Error: Invalid arguments. Usage: lshabits [-id <id>] [-date <dd/mm/yyyy>]")
 
 def mkhabit(arg):
-    """
-            Create a new habit.
-            Usage: mkhabit -name <habit_name> -goal <goal> -unit <liters/km/pages>
-            """
     try:
         args = shlex.split(arg)
         name = None
@@ -47,10 +39,6 @@ def mkhabit(arg):
         print("Error: Invalid arguments. mkhabit -name <habit_name> -goal <goal> -unit <liters/km/pages>")
 
 def chhabit(arg):
-    """
-            Update an existing habit.
-            Usage: chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]
-            """
     try:
         args = shlex.split(arg)
         habit_id = None
@@ -75,10 +63,6 @@ def chhabit(arg):
         print("Error: Invalid arguments. chhabit -id <id> [-name <name>] [-goal <goal>] [-unit <liters/km/pages>]")
 
 def rmhabit(arg):
-    """
-            Remove a habit by ID.
-            Usage: rmhabit -id <id>
-            """
     try:
         args = shlex.split(arg)
         id = None
@@ -94,10 +78,6 @@ def rmhabit(arg):
         print("Error: Invalid arguments. Usage: rmhabit -id <id>")
 
 def habitlog(arg):
-    """
-            Check the streak of a habit by providing its ID.
-            Usage: habitlog -id <id> [-download]
-            """
     try:
         args = shlex.split(arg)
         id = None
@@ -119,10 +99,6 @@ def habitlog(arg):
             "Error: Invalid arguments. Usage: habitlog -id <id> [-download]")
 
 def markhabit(arg):
-    """
-            Mark a habit as completed for today.
-            Usage: markhabit -id <id>
-            """
     try:
         args = shlex.split(arg)
         id = None

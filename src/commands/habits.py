@@ -49,7 +49,7 @@ def list_habits(date=None, id=None):
         if habit:
             print(f"Habit: {habit['name']}")
             for log in habit['log']:
-                print(f"name: {habit['name']} / goal: {habit['goal']} / unit: {habit['unit']} / log: {log['completed']}")
+                print(f"name: {habit['name']} / goal: {habit['goal']} / unit: {habit['unit']} / date: {log['date']} / log: {log['completed']}")
         else:
             print("Habit not found.")
         return
