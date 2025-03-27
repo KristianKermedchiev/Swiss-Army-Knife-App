@@ -123,7 +123,7 @@ class LogDialog(QDialog):
 
         self.setMinimumWidth(400)
         self.setMinimumHeight(300)
-        self.setFixedSize(600, 400)
+        self.setFixedSize(700, 600)
 
         layout = QVBoxLayout()
 
