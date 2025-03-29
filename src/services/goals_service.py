@@ -1,15 +1,10 @@
 import shlex
 from src.commands.goals import list_goals, delete_goal, archive_goal, add_goal_progress, change_goal, make_goal
 
-def lsgoals(arg):
-    """List all goals."""
+def lsgoals():
     list_goals()
 
 def mkgoal(arg):
-    """
-            Create a new goal.
-            Usage: mkgoal -name <name> -unit <unit> -startingValue <starting_value> -endingValue <ending_value> -category
-            """
     try:
         args = shlex.split(arg)
         name = None
@@ -38,10 +33,6 @@ def mkgoal(arg):
             "Error: Invalid arguments. Usage: mkgoal -name <name> -unit <unit> -startingValue <starting_value> -endingValue <ending_value> -category")
 
 def chgoal(arg):
-    """
-            Update an existing goal.
-            Usage: chgoal -id <id> [-name <name>] [-unit <unit>] [-startingValue <startingValue>] [-endingValue <endingValue>] [-category <category>]
-            """
     try:
         args = shlex.split(arg)
         goal_id = None
@@ -73,10 +64,6 @@ def chgoal(arg):
               "[-startingValue <startingValue>] [-endingValue <endingValue>] [-category <category>]")
 
 def rmgoal(arg):
-    """
-            Remove a goal by ID.
-            Usage: rmgoal -id <id>
-            """
     try:
         args = shlex.split(arg)
         id = None
@@ -92,10 +79,6 @@ def rmgoal(arg):
         print("Error: Invalid arguments. Usage: rmgoal -id <id>")
 
 def archivegoal(arg):
-    """
-            Archive a goal by ID.
-            Usage: archivegoal -id <id>
-            """
     try:
         args = shlex.split(arg)
         id = None
@@ -111,10 +94,6 @@ def archivegoal(arg):
         print("Error: Invalid arguments. Usage: archivegoal -id <id>")
 
 def addgoalprogress(arg):
-    """
-            Adds progress to an existing goal.
-            Usage: addgoalprogress -id <id> -value <value>
-            """
     try:
         args = shlex.split(arg)
         goal_id = None

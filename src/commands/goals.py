@@ -78,26 +78,47 @@ def list_goals():
         return
 
     for goal in goals:
-        starting_value = int(goal['startingValue'])
-        end_value = int(goal['endValue'])
-        progress = int(goal['progress'])
+        try:
+            starting_value = float(goal['startingValue'])
+        except ValueError:
+            print(f"Invalid starting value for goal {goal['id']}: {goal['startingValue']}")
+            starting_value = 0
+
+        try:
+            end_value = float(goal['endValue'])
+        except ValueError:
+            print(f"Invalid end value for goal {goal['id']}: {goal['endValue']}")
+            end_value = 0
+
+        try:
+            progress = float(goal['progress'])
+        except ValueError:
+            print(f"Invalid progress value for goal {goal['id']}: {goal['progress']}")
+            progress = 0
 
         if check_goal(goal["id"]) == "negative":
-            current_value = starting_value - progress
-            percent_progress = round(((starting_value - current_value) / (starting_value - end_value)) * 100, 2)
-            if percent_progress > 100:
-                percent_progress = 100
+            if end_value != starting_value:
+                current_value = starting_value - progress
+                percent_progress = round(((starting_value - current_value) / (starting_value - end_value)) * 100, 2)
+                if percent_progress > 100:
+                    percent_progress = 100
+            else:
+                percent_progress = 0
         elif check_goal(goal["id"]) == "positive":
-            current_value = starting_value + progress
-            percent_progress = round(((current_value - starting_value) / (end_value - starting_value)) * 100, 2)
-            if percent_progress > 100:
-                percent_progress = 100
+            if end_value != starting_value:
+                current_value = starting_value + progress
+                percent_progress = round(((current_value - starting_value) / (end_value - starting_value)) * 100, 2)
+                if percent_progress > 100:
+                    percent_progress = 100
+            else:
+                percent_progress = 0
         else:
             percent_progress = 0
 
-        print(f"id: {goal['id']} / name: {goal['name']} / category: {goal['category']} / Start: {goal['startingValue']} "
-              f"/ Target: {goal['endValue']} / unit: {goal['unit']}, "
-              f"Progress: {percent_progress}% / status: {goal['status']} / archived: {goal['archived']}")
+        print(
+            f"id: {goal['id']} / name: {goal['name']} / category: {goal['category']} / Start: {goal['startingValue']} "
+            f"/ Target: {goal['endValue']} / unit: {goal['unit']}, "
+            f"Progress: {percent_progress}% / status: {goal['status']} / archived: {goal['archived']}")
 
 
 
@@ -135,9 +156,9 @@ def add_goal_progress(goal_id, value):
 
     for goal in goals:
         if goal["id"] == goal_id:
-            starting_value = int(goal["startingValue"])
-            end_value = int(goal["endValue"])
-            value = int(value)
+            starting_value = float(goal["startingValue"])
+            end_value = float(goal["endValue"])
+            value = float(value)
 
             if check_goal(goal_id) == 'negative':
                 goal["progress"] += value

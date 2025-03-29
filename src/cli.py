@@ -183,21 +183,42 @@ class TodoAppCLI(cmd.Cmd):
 
     # Goal commands
     def do_lsgoals(self, arg):
-        lsgoals(arg)
+        """List all goals."""
+        lsgoals()
 
     def do_mkgoal(self, arg):
+        """
+        Create a new goal.
+        Usage: mkgoal -name <name> -unit <unit> -startingValue <starting_value> -endingValue <ending_value> -category
+        """
         mkgoal(arg)
 
     def do_chgoal(self, arg):
+        """
+        Update an existing goal.
+        Usage: chgoal -id <id> [-name <name>] [-unit <unit>] [-startingValue <startingValue>] [-endingValue <endingValue>] [-category <category>]
+        """
         chgoal(arg)
 
     def do_rmgoal(self, arg):
+        """
+        Remove a goal by ID.
+        Usage: rmgoal -id <id>
+        """
         rmgoal(arg)
 
     def do_archivegoal(self, arg):
+        """
+        Archive a goal by ID.
+        Usage: archivegoal -id <id>
+        """
         archivegoal(arg)
 
     def do_addgoalprogress(self, arg):
+        """
+        Adds progress to an existing goal.
+        Usage: addgoalprogress -id <id> -value <value>
+        """
         addgoalprogress(arg)
 
     # Study commands
