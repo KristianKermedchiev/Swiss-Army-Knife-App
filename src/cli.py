@@ -223,21 +223,45 @@ class TodoAppCLI(cmd.Cmd):
 
     # Study commands
     def do_lsstudies(self, arg):
+        """
+        List all studies.
+        Usage: lsstudies [-id <id>]
+        """
         lsstudies(arg)
 
     def do_mkstudy(self, arg):
+        """
+        Create a new study.
+        Usage: mkstudy -name <name> -category <category>
+        """
         mkstudy(arg)
 
     def do_chstudy(self, arg):
+        """
+        Update an existing study.
+        Usage: chstudy -id <id> [-name <name>] [-category <category>]
+        """
         chstudy(arg)
 
     def do_rmstudy(self, arg):
+        """
+        Remove a study by ID.
+        Usage: rmstudy -id <id>
+        """
         rmstudy(arg)
 
     def do_logstudy(self, arg):
+        """
+        Log a learned topic.
+        Usage: logstudy -id <id> -name <name> [-date <date: dd/mm/yyyy>]
+        """
         logstudy(arg)
 
     def do_markstudycomplete(self, arg):
+        """
+        Mark a study as complete by ID.
+        Usage: markstudycomplete -id <id>
+        """
         markstudycomplete(arg)
 
     def do_help(self, arg):

@@ -2,10 +2,6 @@ import shlex
 from src.commands.studies import list_studies, delete_study, make_study, change_study, log_study, mark_study_completed
 
 def lsstudies(arg):
-    """
-            List all studies.
-            Usage: lsstudies [-id <id>]
-            """
     try:
         args = shlex.split(arg)
         study_id = None
@@ -19,10 +15,6 @@ def lsstudies(arg):
         print("Error: Invalid arguments. Usage: lsstudies [-id <id>]")
 
 def mkstudy(arg):
-    """
-            Create a new study.
-            Usage: mkstudy -name <name> -category <category>
-            """
     try:
         args = shlex.split(arg)
         name = None
@@ -41,10 +33,6 @@ def mkstudy(arg):
         print("Error: Invalid arguments. Usage: mkstudy -name <name> -category <category>")
 
 def chstudy(arg):
-    """
-            Update an existing study.
-            Usage: chstudy -id <id> [-name <name>] [-category <category>]
-            """
     try:
         args = shlex.split(arg)
         id = None
@@ -65,10 +53,6 @@ def chstudy(arg):
         print("Error: Invalid arguments. Usage: chstudy -id <id> [-name <name>] [-category <category>]")
 
 def rmstudy(arg):
-    """
-            Remove a study by ID.
-            Usage: rmstudy -id <id>
-            """
     try:
         args = shlex.split(arg)
         id = None
@@ -83,10 +67,6 @@ def rmstudy(arg):
         print("Error: Invalid arguments. Usage: rmstudy -id <id>")
 
 def logstudy(arg):
-    """
-            Log a learned topic.
-            Usage: logstudy -id <id> -name <name> [-date <date: dd/mm/YYYY>]
-            """
     try:
         args = shlex.split(arg)
         id = None
@@ -107,10 +87,6 @@ def logstudy(arg):
         print("Error: Invalid arguments. Usage: logstudy -id <id> -name <name> [-date <date: dd/mm/YYYY>]")
 
 def markstudycomplete(arg):
-    """
-            Mark a study as complete by ID.
-            Usage: markstudycomplete -id <id>
-            """
     try:
         args = shlex.split(arg)
         id = None

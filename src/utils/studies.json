@@ -1,0 +1,33 @@
+[
+    {
+        "id": 1,
+        "name": "Python101",
+        "category": "programming",
+        "topics": [
+            {
+                "date": "29/03/2025",
+                "name": "variables"
+            }
+        ],
+        "status": "In Progress"
+    },
+    {
+        "id": 2,
+        "name": "C#101",
+        "category": "test2",
+        "topics": [
+            {
+                "date": "29/03/2025",
+                "name": "variables"
+            }
+        ],
+        "status": "Completed"
+    },
+    {
+        "id": 3,
+        "name": "Java101",
+        "category": "test1",
+        "topics": [],
+        "status": "In Progress"
+    }
+]

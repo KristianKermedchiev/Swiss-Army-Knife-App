@@ -1,5 +1,5 @@
 from src.gui.tabs.base_tab import BaseTab
-from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QPushButton, QTableWidget, QTableWidgetItem, QHeaderView, QHBoxLayout, QWidget, QSizePolicy
+from PyQt5.QtWidgets import QComboBox, QDialog, QPushButton, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QHBoxLayout, QWidget, QSizePolicy
 from src.db.db_interface import load_data
 from src.utils.file_utils import get_data_file_path
 
@@ -16,7 +16,8 @@ class StudiesTab(BaseTab):
         filter_widget.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
         self.status = QComboBox()
-        self.status.addItems(["All", "In Progress", "Completed"])
+        self.status.addItems(
+            ["All", "In Progress", "Completed"])
         self.status.setCurrentText("All")
         self.filter_layout.addWidget(self.status)
 
@@ -36,8 +37,6 @@ class StudiesTab(BaseTab):
         self.layout.addWidget(self.data_table)
 
         self.apply_styles()
-
-        # Initially load and display the studies
         self.list_data()
 
         self.data_table.cellClicked.connect(self.on_study_click)
@@ -51,16 +50,13 @@ class StudiesTab(BaseTab):
     def list_data(self):
         studies = load_data(STUDIES_DATA_FILE)
 
-        # Filter the studies based on the selected filters (status and category)
-        filtered_studies = self.filter_data(studies)
-
-        self.data_table.setRowCount(len(filtered_studies))
+        self.data_table.setRowCount(len(studies))
         self.data_table.setColumnCount(4)
         self.data_table.setHorizontalHeaderLabels(["ID", "Name", "Category", "Status"])
 
         self.data_table.verticalHeader().setVisible(False)
 
-        for row, study in enumerate(filtered_studies):
+        for row, study in enumerate(studies):
             self.data_table.setItem(row, 0, QTableWidgetItem(str(study.get("id", ""))))
             self.data_table.setItem(row, 1, QTableWidgetItem(study.get("name", "")))
             self.data_table.setItem(row, 2, QTableWidgetItem(study.get("category", "")))
@@ -86,23 +82,6 @@ class StudiesTab(BaseTab):
     def open_log_dialog(self, study):
         log_dialog = LogDialog(study)
         log_dialog.exec_()
-
-    def filter_data(self, studies):
-        """Filters the studies based on selected status and category."""
-        status_filter = self.status.currentText()
-        category_filter = self.category.currentText()
-
-        filtered_studies = studies
-
-        # Apply status filter
-        if status_filter != "All":
-            filtered_studies = [study for study in filtered_studies if study["status"] == status_filter]
-
-        # Apply category filter
-        if category_filter != "All":
-            filtered_studies = [study for study in filtered_studies if study["category"] == category_filter]
-
-        return filtered_studies
 
     def apply_styles(self):
         self.data_table.setStyleSheet("""
@@ -130,64 +109,6 @@ class StudiesTab(BaseTab):
                 background-color: #f7f9fc;
             }
         """)
-
-        self.status.setStyleSheet("""
-                    QComboBox {
-                        font-size: 16px;
-                        padding: 8px 12px;
-                        background-color: #ffffff;
-                        border: 2px solid #e1e4e8;
-                        border-radius: 6px;
-                        color: #2c3e50;
-                        selection-background-color: #3498db;
-                    }
-
-                    QComboBox:hover {
-                        border-color: #3498db;
-                        transition: border-color 0.3s ease;
-                    }
-                """)
-
-        self.category.setStyleSheet("""
-                            QComboBox {
-                                font-size: 16px;
-                                padding: 8px 12px;
-                                background-color: #ffffff;
-                                border: 2px solid #e1e4e8;
-                                border-radius: 6px;
-                                color: #2c3e50;
-                                selection-background-color: #3498db;
-                            }
-
-                            QComboBox:hover {
-                                border-color: #3498db;
-                                transition: border-color 0.3s ease;
-                            }
-                        """)
-
-        self.list_button.setStyleSheet("""
-                    QPushButton {
-                        background-color: #3498db;
-                        color: white;
-                        font-size: 16px;
-                        font-weight: 600;
-                        padding: 8px 15px;
-                        border-radius: 6px;
-                        border: none;
-                        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-                        transition: background-color 0.3s ease, transform 0.1s ease;
-                    }
-
-                    QPushButton:hover {
-                        background-color: #2980b9;
-                        transform: scale(1.05);
-                    }
-
-                    QPushButton:pressed {
-                        background-color: #21618c;
-                        transform: scale(0.95);
-                    }
-                """)
 
         self.data_table.horizontalHeader().setStyleSheet("""
             QHeaderView::section {

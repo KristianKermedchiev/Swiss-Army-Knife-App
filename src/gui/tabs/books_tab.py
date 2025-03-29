@@ -12,10 +12,7 @@ class BooksTab(BaseTab):
         self.filter_layout = QHBoxLayout()
 
         self.genre_combo = QComboBox()
-        self.genre_combo.addItem("All")
-        self.genre_combo.addItem("Horror")
-        self.genre_combo.addItem("Fantasy")
-        self.genre_combo.addItem("Sci-Fi")
+        self.genre_combo.addItems(self.get_unique_genres())
         self.genre_combo.setCurrentText("All")
         self.filter_layout.addWidget(self.genre_combo)
 
@@ -41,6 +38,12 @@ class BooksTab(BaseTab):
 
         self.apply_styles()
         self.list_data()
+
+    def get_unique_genres(self):
+        """Fetches unique genres from the dataset."""
+        books = load_data(BOOKS_DATA_FILE)
+        genres = {book['genre'] for book in books}
+        return ["All"] + sorted(genres)
 
     def list_data(self):
         books = load_data(BOOKS_DATA_FILE)
