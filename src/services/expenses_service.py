@@ -2,14 +2,9 @@ import shlex
 from src.commands.expenses import make_expense, list_expenses, change_expense, delete_expense, expense_log
 
 def lsexpense(arg):
-    """List all expenses."""
     list_expenses()
 
 def mkexpense(arg):
-    """
-    Create a new expense.
-    Usage: mkexpense -description <description> -amount <amount> [-date <date>] (optional in format %dd/%mm/%YYYY) -category <category>
-    """
     try:
         args = shlex.split(arg)
         description = None
@@ -35,10 +30,6 @@ def mkexpense(arg):
               " [-date <date>] -category <category>")
 
 def chexpense(arg):
-    """
-           Modify an existing expense.
-           Usage: chexpense -id <id> [-description <description>] [-amount <amount>] [-date <date>] [-category <category>]
-           """
     try:
         args = shlex.split(arg)
         expense_id = None
@@ -67,10 +58,6 @@ def chexpense(arg):
               "[-amount <amount>] [-date <date>] [-category <category>]")
 
 def rmexpense(arg):
-    """
-            Remove an expense by ID.
-            Usage: rmexpense -id <id>
-            """
     try:
         args = shlex.split(arg)
         expense_id = None
@@ -86,10 +73,6 @@ def rmexpense(arg):
         print("Error: Invalid arguments. Usage: rmexpense -id <id>")
 
 def expenselog(arg):
-    """
-          Generate an expense log based on filters (start_date, end_date, or category) and optionally export to CSV.
-          Usage: expenselog [-start_date <date>] [-end_date <date>] [-category <category>] [-download]
-          """
     try:
         args = shlex.split(arg)
         start_date = None

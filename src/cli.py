@@ -25,18 +25,35 @@ class TodoAppCLI(cmd.Cmd):
 
     #Expense commands
     def do_lsexpenses(self, arg):
+        """List all expenses."""
         lsexpense(arg)
 
     def do_mkexpense(self, arg):
+        """
+        Create a new expense.
+        Usage: mkexpense -description <description> -amount <amount> [-date <date>] (optional in format %dd/%mm/%YYYY) -category <category>
+        """
         mkexpense(arg)
 
     def do_chexpense(self, arg):
-       chexpense(arg)
+        """
+        Modify an existing expense.
+        Usage: chexpense -id <id> [-description <description>] [-amount <amount>] [-date <date>] [-category <category>]
+        """
+        chexpense(arg)
 
     def do_rmexpense(self, arg):
+        """
+        Remove an expense by ID.
+        Usage: rmexpense -id <id>
+        """
         rmexpense(arg)
 
     def do_expenselog(self, arg):
+        """
+        Generate an expense log based on filters (start_date, end_date, or category) and optionally export to CSV.
+        Usage: expenselog [-start_date <date>] [-end_date <date>] [-category <category>] [-download]
+        """
         expenselog(arg)
 
     #Todo commands

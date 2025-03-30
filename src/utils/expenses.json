@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "date": "25/02/2025",
+        "description": "Test1",
+        "amount": "14.56",
+        "category": "Test1"
+    },
+    {
+        "id": 2,
+        "date": "29/03/2025",
+        "description": "Test2",
+        "amount": "123,45",
+        "category": "Test2"
+    }
+]

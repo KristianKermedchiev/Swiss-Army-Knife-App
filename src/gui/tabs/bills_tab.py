@@ -12,18 +12,18 @@ class BillsTab(BaseTab):
 
         self.filter_layout = QHBoxLayout()
 
+        current_year = str(datetime.now().year)
         self.year_combo = QComboBox()
         self.year_combo.addItem("All")
-        self.year_combo.addItem("2027")
-        self.year_combo.addItem("2026")
-        self.year_combo.addItem("2025")
-        # Add more years as needed
-        self.year_combo.setCurrentText("All")  # Set default to All
+        for year in range(2025, 2030):
+            self.year_combo.addItem(str(year))
+        self.year_combo.setCurrentText(current_year)
         self.filter_layout.addWidget(self.year_combo)
 
+        current_month = datetime.now().strftime("%B")
         self.month_combo = QComboBox()
         self.month_combo.addItems(["All", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
-        self.month_combo.setCurrentText("All")
+        self.month_combo.setCurrentText(current_month)
         self.filter_layout.addWidget(self.month_combo)
 
         self.list_button = QPushButton("List Bills")
@@ -60,7 +60,7 @@ class BillsTab(BaseTab):
         for row, bill in enumerate(filtered_bills):
             self.data_table.setItem(row, 0, QTableWidgetItem(str(bill.get("id", ""))))
             self.data_table.setItem(row, 1, QTableWidgetItem(bill.get("description", "")))
-            self.data_table.setItem(row, 2, QTableWidgetItem(bill.get("price", "")))
+            self.data_table.setItem(row, 2, QTableWidgetItem(str(bill.get("price", ""))))
             self.data_table.setItem(row, 3, QTableWidgetItem(bill.get("date", "")))
 
         self.data_table.resizeColumnsToContents()
@@ -89,7 +89,7 @@ class BillsTab(BaseTab):
         """Extract the month name from a date string (dd/mm/yyyy)."""
         try:
             date_obj = datetime.strptime(date_string, "%d/%m/%Y")
-            return date_obj.strftime("%B")  # Full month name
+            return date_obj.strftime("%B")
         except ValueError:
             return ""
 
