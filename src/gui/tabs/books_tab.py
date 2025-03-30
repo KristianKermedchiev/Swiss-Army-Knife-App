@@ -65,7 +65,9 @@ class BooksTab(BaseTab):
             self.data_table.setItem(row, 2, QTableWidgetItem(bill.get("genre", "")))
             self.data_table.setItem(row, 3, QTableWidgetItem(bill.get("pages", "")))
             self.data_table.setItem(row, 4, QTableWidgetItem(str(bill.get("pages_read", 0))))
-            self.data_table.setItem(row, 5, QTableWidgetItem(str(bill.get("progress", ""))))
+            progress_value = bill.get("progress", "")
+            progress_text = f"{progress_value}%" if progress_value else ""
+            self.data_table.setItem(row, 5, QTableWidgetItem(progress_text))
             self.data_table.setItem(row, 6, QTableWidgetItem(bill.get("status", "")))
             self.data_table.setItem(row, 7, QTableWidgetItem(bill.get("rating", "")))
 

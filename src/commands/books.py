@@ -11,7 +11,7 @@ def list_books():
         return
 
     for book in books:
-        print(f"id: {book['id']} / title: {book['title']} / genre: {book['genre']} / progress: {book['progress']}"
+        print(f"id: {book['id']} / title: {book['title']} / genre: {book['genre']} / progress: {book['progress']}%"
               f" / status: {book['status']} / rating: {book['rating']} ")
 
 
@@ -57,7 +57,7 @@ def add_progress(book_id, pages):
             book["pages_read"] += int(pages)
             book["progress"] = round((int(book["pages_read"]) / int(book["pages"])) * 100, 2)
             save_data(BOOKS_DATA_FILE, books)
-            print(f'Progress updated successfully for book {book["title"]}, current progress is {book["progress"]}.')
+            print(f'Progress updated successfully for book {book["title"]}, current progress is {book["progress"]}%.')
             return
 
     print(f"Error: Book with ID {book_id} not found.")

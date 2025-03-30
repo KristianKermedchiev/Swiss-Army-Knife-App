@@ -93,7 +93,7 @@ def list_goals():
         try:
             progress = float(goal['progress'])
         except ValueError:
-            print(f"Invalid progress value for goal {goal['id']}: {goal['progress']}")
+            print(f"Invalid progress value for goal {goal['id']}: {goal['progress']}%")
             progress = 0
 
         if check_goal(goal["id"]) == "negative":

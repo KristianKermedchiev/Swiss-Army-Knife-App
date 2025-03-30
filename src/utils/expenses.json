@@ -1,16 +1,156 @@
 [
     {
         "id": 1,
-        "date": "25/02/2025",
-        "description": "Test1",
-        "amount": "14.56",
-        "category": "Test1"
+        "date": "05/02/2025",
+        "description": "Grocery Shopping",
+        "amount": "89.75",
+        "category": "Food"
     },
     {
         "id": 2,
+        "date": "08/02/2025",
+        "description": "Electricity Bill",
+        "amount": "78,50",
+        "category": "Utilities"
+    },
+    {
+        "id": 3,
+        "date": "10/02/2025",
+        "description": "Restaurant Dinner",
+        "amount": "65.20",
+        "category": "Food"
+    },
+    {
+        "id": 4,
+        "date": "12/02/2025",
+        "description": "Gas Bill",
+        "amount": "42,30",
+        "category": "Utilities"
+    },
+    {
+        "id": 5,
+        "date": "15/02/2025",
+        "description": "Movie Tickets",
+        "amount": "25.00",
+        "category": "Entertainment"
+    },
+    {
+        "id": 6,
+        "date": "18/02/2025",
+        "description": "Online Shopping",
+        "amount": "120,75",
+        "category": "Shopping"
+    },
+    {
+        "id": 7,
+        "date": "20/02/2025",
+        "description": "Phone Bill",
+        "amount": "35.90",
+        "category": "Utilities"
+    },
+    {
+        "id": 8,
+        "date": "22/02/2025",
+        "description": "Coffee Shop",
+        "amount": "12,50",
+        "category": "Food"
+    },
+    {
+        "id": 9,
+        "date": "25/02/2025",
+        "description": "Gym Membership",
+        "amount": "45.00",
+        "category": "Health"
+    },
+    {
+        "id": 10,
+        "date": "28/02/2025",
+        "description": "Taxi Ride",
+        "amount": "22,80",
+        "category": "Transportation"
+    },
+    {
+        "id": 11,
+        "date": "02/03/2025",
+        "description": "Grocery Shopping",
+        "amount": "102.35",
+        "category": "Food"
+    },
+    {
+        "id": 12,
+        "date": "05/03/2025",
+        "description": "Internet Bill",
+        "amount": "45,00",
+        "category": "Utilities"
+    },
+    {
+        "id": 13,
+        "date": "08/03/2025",
+        "description": "Restaurant Lunch",
+        "amount": "38.75",
+        "category": "Food"
+    },
+    {
+        "id": 14,
+        "date": "10/03/2025",
+        "description": "Water Bill",
+        "amount": "30,20",
+        "category": "Utilities"
+    },
+    {
+        "id": 15,
+        "date": "12/03/2025",
+        "description": "Concert Tickets",
+        "amount": "85.00",
+        "category": "Entertainment"
+    },
+    {
+        "id": 16,
+        "date": "15/03/2025",
+        "description": "New Clothes",
+        "amount": "150,80",
+        "category": "Shopping"
+    },
+    {
+        "id": 17,
+        "date": "18/03/2025",
+        "description": "Haircut",
+        "amount": "35.00",
+        "category": "Personal Care"
+    },
+    {
+        "id": 18,
+        "date": "20/03/2025",
+        "description": "Books",
+        "amount": "48,25",
+        "category": "Education"
+    },
+    {
+        "id": 19,
+        "date": "23/03/2025",
+        "description": "Pharmacy",
+        "amount": "32.40",
+        "category": "Health"
+    },
+    {
+        "id": 20,
+        "date": "25/03/2025",
+        "description": "Bus Ticket",
+        "amount": "15,50",
+        "category": "Transportation"
+    },
+    {
+        "id": 21,
+        "date": "28/03/2025",
+        "description": "Snacks",
+        "amount": "8.75",
+        "category": "Food"
+    },
+    {
+        "id": 22,
         "date": "29/03/2025",
-        "description": "Test2",
-        "amount": "123,45",
-        "category": "Test2"
+        "description": "Home Supplies",
+        "amount": "67,90",
+        "category": "Household"
     }
 ]

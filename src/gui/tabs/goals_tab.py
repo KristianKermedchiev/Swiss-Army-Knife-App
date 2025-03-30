@@ -61,7 +61,9 @@ class GoalsTab(BaseTab):
             self.data_table.setItem(row, 3, QTableWidgetItem(goal.get("startingValue", "")))
             self.data_table.setItem(row, 4, QTableWidgetItem(goal.get("endValue", "")))
             self.data_table.setItem(row, 5, QTableWidgetItem(goal.get("status", "")))
-            self.data_table.setItem(row, 6, QTableWidgetItem(str(goal.get("progress", ""))))
+            progress_value = goal.get("progress", "")
+            progress_text = f"{progress_value}%" if progress_value else ""
+            self.data_table.setItem(row, 6, QTableWidgetItem(progress_text))
             self.data_table.setItem(row, 7, QTableWidgetItem(goal.get("category", "")))
 
             archived_status = "Archived" if goal.get("archived", False) else "Active"
