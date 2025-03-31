@@ -1,5 +1,5 @@
 # Swiss-Army-Knife App ✅  
-My new years' resolution was to be more disciplined with my exercises, finances and studies. I've build this lightweight CLI-based app to help track day-to-day tasks, studies, habits and more. I decided to make it a full CLI app with the commands in the style of UNIX to become more comfortable with the CLI in general and to have that sweet dopamine when I finish a task and log it in my command line each day. In version 2 I decided to add the GUI feature to better visualize the data store in the .json files. I decided to add the expenses comparing feature to better understand where I spend my money and how and when I can take cuts if needed.
+My new years' resolution was to be more disciplined with my exercises, finances and studies. I have built this lightweight CLI-based app to help track day-to-day tasks, studies, habits and more. I decided to make it a full CLI app with the commands in the style of UNIX to become more comfortable with the CLI in general and to have that sweet dopamine when I finish a task and log it in my command line each day. In version 2 I decided to add the GUI feature to better visualize the data stored in the .json files.
 
 ---
 
