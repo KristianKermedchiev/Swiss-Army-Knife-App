@@ -11,3 +11,4 @@ src/todo.md
 /src/build
 /src/dist
 .json
+.spec
