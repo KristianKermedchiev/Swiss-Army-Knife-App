@@ -1,29 +1,23 @@
-from src.gui.tabs.base_tab import BaseTab
+from src.gui_tabs.base_tab import BaseTab
 from PyQt5.QtWidgets import QComboBox, QPushButton, QTableWidget, QTableWidgetItem, QHBoxLayout, QHeaderView, QSizePolicy, QWidget
 from src.db.db_interface import load_data
 from src.utils.file_utils import get_data_file_path
 
-GOALS_DATA_FILE = get_data_file_path('goals.json')
+TODO_DATA_FILE = get_data_file_path('todos.json')
 
-class GoalsTab(BaseTab):
+
+class TodosTab(BaseTab):
     def __init__(self):
-        super().__init__(tab_name="Goals")
+        super().__init__(tab_name="Todos")
 
         self.filter_layout = QHBoxLayout()
 
-        self.archived_combo = QComboBox()
-        self.archived_combo.addItems(
-            ["All", "Archived", "Active"])
-        self.archived_combo.setCurrentText("All")
-        self.filter_layout.addWidget(self.archived_combo)
+        self.category_combo = QComboBox()
+        self.category_combo.addItems(["all", "incomplete", "complete"])
+        self.category_combo.setCurrentText("incomplete")
+        self.filter_layout.addWidget(self.category_combo)
 
-        self.status_combo = QComboBox()
-        self.status_combo.addItems(
-            ["All", "In Progress", "Completed"])
-        self.status_combo.setCurrentText("All")
-        self.filter_layout.addWidget(self.status_combo)
-
-        self.list_button = QPushButton("List Goals")
+        self.list_button = QPushButton("List Todos")
         self.list_button.clicked.connect(self.list_data)
         self.filter_layout.addWidget(self.list_button)
 
@@ -41,33 +35,23 @@ class GoalsTab(BaseTab):
         self.list_data()
 
     def list_data(self):
-        goals = load_data(GOALS_DATA_FILE)
+        todos = load_data(TODO_DATA_FILE)
 
-        selected_archived = self.archived_combo.currentText()
-        selected_status = self.status_combo.currentText()
+        selected_category = self.category_combo.currentText()
 
-        filtered_goals = self.filter_data(goals, selected_archived, selected_status)
+        filtered_todos = self.filter_data(todos, selected_category)
 
-        self.data_table.setRowCount(len(filtered_goals))
-        self.data_table.setColumnCount(9)
-        self.data_table.setHorizontalHeaderLabels(["ID", "Name", "Unit", "Start", "End", "Status", "Progress", "Category", "Archived"])
+        self.data_table.setRowCount(len(filtered_todos))
+        self.data_table.setColumnCount(4)
+        self.data_table.setHorizontalHeaderLabels(["ID", "Description", "Due Date", "Status"])
 
         self.data_table.verticalHeader().setVisible(False)
 
-        for row, goal in enumerate(filtered_goals):
-            self.data_table.setItem(row, 0, QTableWidgetItem(str(goal.get("id", ""))))
-            self.data_table.setItem(row, 1, QTableWidgetItem(goal.get("name", "")))
-            self.data_table.setItem(row, 2, QTableWidgetItem(goal.get("unit", "")))
-            self.data_table.setItem(row, 3, QTableWidgetItem(goal.get("startingValue", "")))
-            self.data_table.setItem(row, 4, QTableWidgetItem(goal.get("endValue", "")))
-            self.data_table.setItem(row, 5, QTableWidgetItem(goal.get("status", "")))
-            progress_value = goal.get("progress", "")
-            progress_text = f"{progress_value}%" if progress_value else ""
-            self.data_table.setItem(row, 6, QTableWidgetItem(progress_text))
-            self.data_table.setItem(row, 7, QTableWidgetItem(goal.get("category", "")))
-
-            archived_status = "Archived" if goal.get("archived", False) else "Active"
-            self.data_table.setItem(row, 8, QTableWidgetItem(archived_status))
+        for row, todo in enumerate(filtered_todos):
+            self.data_table.setItem(row, 0, QTableWidgetItem(str(todo.get("id", ""))))
+            self.data_table.setItem(row, 1, QTableWidgetItem(todo.get("description", "")))
+            self.data_table.setItem(row, 2, QTableWidgetItem(todo.get("due_date", "")))
+            self.data_table.setItem(row, 3, QTableWidgetItem(todo.get("status", "")))
 
         self.data_table.resizeColumnsToContents()
 
@@ -75,45 +59,23 @@ class GoalsTab(BaseTab):
         header.setStretchLastSection(True)
         header.setSectionResizeMode(QHeaderView.Stretch)
 
-    def filter_data(self, goals, selected_archived, selected_status):
-        """Filters the goals based on selected archived status and goal status."""
+    def filter_data(self, todos, selected_category):
+        """Filters the todos based on category."""
         filtered = []
 
-        if selected_archived != "All":
-            if selected_archived == "Archived":
-                goals = [goal for goal in goals if goal.get("archived", False) == True]
-            elif selected_archived == "Active":
-                goals = [goal for goal in goals if goal.get("archived", False) == False]
-
-        if selected_status != "All":
-            filtered = [
-                goal for goal in goals if goal.get("status") == selected_status
-            ]
-        else:
-            filtered = goals
+        for todo in todos:
+            if selected_category == "all":
+                filtered.append(todo)
+            elif selected_category == "incomplete" and todo.get("status") == "incomplete":
+                filtered.append(todo)
+            elif selected_category == "complete" and todo.get("status") == "complete":
+                filtered.append(todo)
 
         return filtered
 
     def apply_styles(self):
         """Applies enhanced custom styles to widgets with dynamic width."""
-        self.archived_combo.setStyleSheet("""
-                    QComboBox {
-                        font-size: 16px;
-                        padding: 8px 12px;
-                        background-color: #ffffff;
-                        border: 2px solid #e1e4e8;
-                        border-radius: 6px;
-                        color: #2c3e50;
-                        selection-background-color: #3498db;
-                    }
-
-                    QComboBox:hover {
-                        border-color: #3498db;
-                        transition: border-color 0.3s ease;
-                    }
-                """)
-
-        self.status_combo.setStyleSheet("""
+        self.category_combo.setStyleSheet("""
             QComboBox {
                 font-size: 16px;
                 padding: 8px 12px;

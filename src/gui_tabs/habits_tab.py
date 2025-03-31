@@ -1,5 +1,6 @@
-from src.gui.tabs.base_tab import BaseTab
-from PyQt5.QtWidgets import QComboBox, QDialog, QVBoxLayout, QLabel, QTableWidget, QTableWidgetItem, QHeaderView, QHBoxLayout, QPushButton, QWidget, QSizePolicy
+from src.gui_tabs.base_tab import BaseTab
+from PyQt5.QtWidgets import QComboBox, QDialog, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QHBoxLayout, \
+    QWidget, QSizePolicy
 from src.commands.habits import HABITS_DATA_FILE
 from src.db.db_interface import load_data
 from src.utils.file_utils import get_data_file_path

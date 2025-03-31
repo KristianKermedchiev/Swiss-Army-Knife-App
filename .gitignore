@@ -9,3 +9,5 @@ src/todo.md
 *.md
 *.csv
 /src/build
+/src/dist
+.json

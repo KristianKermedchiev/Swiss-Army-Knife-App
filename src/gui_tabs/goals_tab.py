@@ -1,32 +1,29 @@
-from src.gui.tabs.base_tab import BaseTab
+from src.gui_tabs.base_tab import BaseTab
 from PyQt5.QtWidgets import QComboBox, QPushButton, QTableWidget, QTableWidgetItem, QHBoxLayout, QHeaderView, QSizePolicy, QWidget
 from src.db.db_interface import load_data
 from src.utils.file_utils import get_data_file_path
-from datetime import datetime
 
-BILLS_DATA_FILE = get_data_file_path('bills.json')
+GOALS_DATA_FILE = get_data_file_path('goals.json')
 
-class BillsTab(BaseTab):
+class GoalsTab(BaseTab):
     def __init__(self):
-        super().__init__(tab_name="Bills")
+        super().__init__(tab_name="Goals")
 
         self.filter_layout = QHBoxLayout()
 
-        current_year = str(datetime.now().year)
-        self.year_combo = QComboBox()
-        self.year_combo.addItem("All")
-        for year in range(2025, 2030):
-            self.year_combo.addItem(str(year))
-        self.year_combo.setCurrentText(current_year)
-        self.filter_layout.addWidget(self.year_combo)
+        self.archived_combo = QComboBox()
+        self.archived_combo.addItems(
+            ["All", "Archived", "Active"])
+        self.archived_combo.setCurrentText("All")
+        self.filter_layout.addWidget(self.archived_combo)
 
-        current_month = datetime.now().strftime("%B")
-        self.month_combo = QComboBox()
-        self.month_combo.addItems(["All", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
-        self.month_combo.setCurrentText(current_month)
-        self.filter_layout.addWidget(self.month_combo)
+        self.status_combo = QComboBox()
+        self.status_combo.addItems(
+            ["All", "In Progress", "Completed"])
+        self.status_combo.setCurrentText("All")
+        self.filter_layout.addWidget(self.status_combo)
 
-        self.list_button = QPushButton("List Bills")
+        self.list_button = QPushButton("List Goals")
         self.list_button.clicked.connect(self.list_data)
         self.filter_layout.addWidget(self.list_button)
 
@@ -44,24 +41,33 @@ class BillsTab(BaseTab):
         self.list_data()
 
     def list_data(self):
-        bills = load_data(BILLS_DATA_FILE)
+        goals = load_data(GOALS_DATA_FILE)
 
-        selected_year = self.year_combo.currentText()
-        selected_month = self.month_combo.currentText()
+        selected_archived = self.archived_combo.currentText()
+        selected_status = self.status_combo.currentText()
 
-        filtered_bills = self.filter_data(bills, selected_year, selected_month)
+        filtered_goals = self.filter_data(goals, selected_archived, selected_status)
 
-        self.data_table.setRowCount(len(filtered_bills))
-        self.data_table.setColumnCount(4)
-        self.data_table.setHorizontalHeaderLabels(["ID", "Description", "Price", "Date"])
+        self.data_table.setRowCount(len(filtered_goals))
+        self.data_table.setColumnCount(9)
+        self.data_table.setHorizontalHeaderLabels(["ID", "Name", "Unit", "Start", "End", "Status", "Progress", "Category", "Archived"])
 
         self.data_table.verticalHeader().setVisible(False)
 
-        for row, bill in enumerate(filtered_bills):
-            self.data_table.setItem(row, 0, QTableWidgetItem(str(bill.get("id", ""))))
-            self.data_table.setItem(row, 1, QTableWidgetItem(bill.get("description", "")))
-            self.data_table.setItem(row, 2, QTableWidgetItem(str(bill.get("price", ""))))
-            self.data_table.setItem(row, 3, QTableWidgetItem(bill.get("date", "")))
+        for row, goal in enumerate(filtered_goals):
+            self.data_table.setItem(row, 0, QTableWidgetItem(str(goal.get("id", ""))))
+            self.data_table.setItem(row, 1, QTableWidgetItem(goal.get("name", "")))
+            self.data_table.setItem(row, 2, QTableWidgetItem(goal.get("unit", "")))
+            self.data_table.setItem(row, 3, QTableWidgetItem(goal.get("startingValue", "")))
+            self.data_table.setItem(row, 4, QTableWidgetItem(goal.get("endValue", "")))
+            self.data_table.setItem(row, 5, QTableWidgetItem(goal.get("status", "")))
+            progress_value = goal.get("progress", "")
+            progress_text = f"{progress_value}%" if progress_value else ""
+            self.data_table.setItem(row, 6, QTableWidgetItem(progress_text))
+            self.data_table.setItem(row, 7, QTableWidgetItem(goal.get("category", "")))
+
+            archived_status = "Archived" if goal.get("archived", False) else "Active"
+            self.data_table.setItem(row, 8, QTableWidgetItem(archived_status))
 
         self.data_table.resizeColumnsToContents()
 
@@ -69,33 +75,28 @@ class BillsTab(BaseTab):
         header.setStretchLastSection(True)
         header.setSectionResizeMode(QHeaderView.Stretch)
 
-    def filter_data(self, bills, selected_year, selected_month):
-        """Filters the bills based on selected year and month."""
+    def filter_data(self, goals, selected_archived, selected_status):
+        """Filters the goals based on selected archived status and goal status."""
         filtered = []
 
-        if selected_year != "All":
-            bills = [bill for bill in bills if bill.get("date", "").endswith(selected_year)]
+        if selected_archived != "All":
+            if selected_archived == "Archived":
+                goals = [goal for goal in goals if goal.get("archived", False) == True]
+            elif selected_archived == "Active":
+                goals = [goal for goal in goals if goal.get("archived", False) == False]
 
-        if selected_month != "All":
+        if selected_status != "All":
             filtered = [
-                bill for bill in bills if self.get_month_name_from_date(bill.get("date")) == selected_month
+                goal for goal in goals if goal.get("status") == selected_status
             ]
         else:
-            filtered = bills
+            filtered = goals
 
         return filtered
 
-    def get_month_name_from_date(self, date_string):
-        """Extract the month name from a date string (dd/mm/yyyy)."""
-        try:
-            date_obj = datetime.strptime(date_string, "%d/%m/%Y")
-            return date_obj.strftime("%B")
-        except ValueError:
-            return ""
-
     def apply_styles(self):
         """Applies enhanced custom styles to widgets with dynamic width."""
-        self.year_combo.setStyleSheet("""
+        self.archived_combo.setStyleSheet("""
                     QComboBox {
                         font-size: 16px;
                         padding: 8px 12px;
@@ -112,7 +113,7 @@ class BillsTab(BaseTab):
                     }
                 """)
 
-        self.month_combo.setStyleSheet("""
+        self.status_combo.setStyleSheet("""
             QComboBox {
                 font-size: 16px;
                 padding: 8px 12px;

@@ -1,4 +1,4 @@
-from src.gui.tabs.base_tab import BaseTab
+from src.gui_tabs.base_tab import BaseTab
 from PyQt5.QtWidgets import (QComboBox, QPushButton, QTableWidget, QTableWidgetItem,
                              QHBoxLayout, QHeaderView, QSizePolicy, QWidget, QVBoxLayout,
                              QDialog, QLabel, QGroupBox, QGridLayout, QFrame)

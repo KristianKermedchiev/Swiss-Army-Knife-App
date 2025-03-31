@@ -1,12 +1,11 @@
 import cmd
-
-from src.services.expenses_service import mkexpense, lsexpense, chexpense, rmexpense, expenselog
-from src.services.books_service import lsbooks, mkbook, chbook, addbookrating, chbookstatus, addbookprogress, rmbook
-from src.services.bills_service import lsbills, mkbill, chbill, rmbill
-from src.services.goals_service import lsgoals, mkgoal, chgoal, rmgoal, archivegoal, addgoalprogress
-from src.services.habits_service import lshabits, mkhabit, chhabit, rmhabit, habitlog, markhabit
-from src.services.studies_service import lsstudies, mkstudy, chstudy, rmstudy, logstudy, markstudycomplete
-from src.services.todos_service import lstodos, mktodo, chtodo, rmtodo
+from services.expenses_service import mkexpense, lsexpense, chexpense, rmexpense, expenselog
+from services.books_service import lsbooks, mkbook, chbook, addbookrating, chbookstatus, addbookprogress, rmbook
+from services.bills_service import lsbills, mkbill, chbill, rmbill
+from services.goals_service import lsgoals, mkgoal, chgoal, rmgoal, archivegoal, addgoalprogress
+from services.habits_service import lshabits, mkhabit, chhabit, rmhabit, habitlog, markhabit
+from services.studies_service import lsstudies, mkstudy, chstudy, rmstudy, logstudy, markstudycomplete
+from services.todos_service import lstodos, mktodo, chtodo, rmtodo
 
 
 class TodoAppCLI(cmd.Cmd):

@@ -1,11 +1,11 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTabWidget
-from src.gui.tabs.bills_tab import BillsTab
-from src.gui.tabs.expenses_tab import ExpensesTab
-from src.gui.tabs.goals_tab import GoalsTab
-from src.gui.tabs.habits_tab import HabitsTab
-from src.gui.tabs.books_tab import BooksTab
-from src.gui.tabs.studies_tab import StudiesTab
-from src.gui.tabs.todos_tab import TodosTab
+from gui_tabs.bills_tab import BillsTab
+from gui_tabs.expenses_tab import ExpensesTab
+from gui_tabs.goals_tab import GoalsTab
+from gui_tabs.habits_tab import HabitsTab
+from gui_tabs.books_tab import BooksTab
+from gui_tabs.studies_tab import StudiesTab
+from gui_tabs.todos_tab import TodosTab
 
 class MainWindow(QMainWindow):
     def __init__(self):

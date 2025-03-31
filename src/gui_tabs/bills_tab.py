@@ -1,23 +1,32 @@
-from src.gui.tabs.base_tab import BaseTab
+from src.gui_tabs.base_tab import BaseTab
 from PyQt5.QtWidgets import QComboBox, QPushButton, QTableWidget, QTableWidgetItem, QHBoxLayout, QHeaderView, QSizePolicy, QWidget
 from src.db.db_interface import load_data
 from src.utils.file_utils import get_data_file_path
+from datetime import datetime
 
-TODO_DATA_FILE = get_data_file_path('todos.json')
+BILLS_DATA_FILE = get_data_file_path('bills.json')
 
-
-class TodosTab(BaseTab):
+class BillsTab(BaseTab):
     def __init__(self):
-        super().__init__(tab_name="Todos")
+        super().__init__(tab_name="Bills")
 
         self.filter_layout = QHBoxLayout()
 
-        self.category_combo = QComboBox()
-        self.category_combo.addItems(["all", "incomplete", "complete"])
-        self.category_combo.setCurrentText("incomplete")
-        self.filter_layout.addWidget(self.category_combo)
+        current_year = str(datetime.now().year)
+        self.year_combo = QComboBox()
+        self.year_combo.addItem("All")
+        for year in range(2025, 2030):
+            self.year_combo.addItem(str(year))
+        self.year_combo.setCurrentText(current_year)
+        self.filter_layout.addWidget(self.year_combo)
 
-        self.list_button = QPushButton("List Todos")
+        current_month = datetime.now().strftime("%B")
+        self.month_combo = QComboBox()
+        self.month_combo.addItems(["All", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"])
+        self.month_combo.setCurrentText(current_month)
+        self.filter_layout.addWidget(self.month_combo)
+
+        self.list_button = QPushButton("List Bills")
         self.list_button.clicked.connect(self.list_data)
         self.filter_layout.addWidget(self.list_button)
 
@@ -35,23 +44,24 @@ class TodosTab(BaseTab):
         self.list_data()
 
     def list_data(self):
-        todos = load_data(TODO_DATA_FILE)
+        bills = load_data(BILLS_DATA_FILE)
 
-        selected_category = self.category_combo.currentText()
+        selected_year = self.year_combo.currentText()
+        selected_month = self.month_combo.currentText()
 
-        filtered_todos = self.filter_data(todos, selected_category)
+        filtered_bills = self.filter_data(bills, selected_year, selected_month)
 
-        self.data_table.setRowCount(len(filtered_todos))
+        self.data_table.setRowCount(len(filtered_bills))
         self.data_table.setColumnCount(4)
-        self.data_table.setHorizontalHeaderLabels(["ID", "Description", "Due Date", "Status"])
+        self.data_table.setHorizontalHeaderLabels(["ID", "Description", "Price", "Date"])
 
         self.data_table.verticalHeader().setVisible(False)
 
-        for row, todo in enumerate(filtered_todos):
-            self.data_table.setItem(row, 0, QTableWidgetItem(str(todo.get("id", ""))))
-            self.data_table.setItem(row, 1, QTableWidgetItem(todo.get("description", "")))
-            self.data_table.setItem(row, 2, QTableWidgetItem(todo.get("due_date", "")))
-            self.data_table.setItem(row, 3, QTableWidgetItem(todo.get("status", "")))
+        for row, bill in enumerate(filtered_bills):
+            self.data_table.setItem(row, 0, QTableWidgetItem(str(bill.get("id", ""))))
+            self.data_table.setItem(row, 1, QTableWidgetItem(bill.get("description", "")))
+            self.data_table.setItem(row, 2, QTableWidgetItem(str(bill.get("price", ""))))
+            self.data_table.setItem(row, 3, QTableWidgetItem(bill.get("date", "")))
 
         self.data_table.resizeColumnsToContents()
 
@@ -59,23 +69,50 @@ class TodosTab(BaseTab):
         header.setStretchLastSection(True)
         header.setSectionResizeMode(QHeaderView.Stretch)
 
-    def filter_data(self, todos, selected_category):
-        """Filters the todos based on category."""
+    def filter_data(self, bills, selected_year, selected_month):
+        """Filters the bills based on selected year and month."""
         filtered = []
 
-        for todo in todos:
-            if selected_category == "all":
-                filtered.append(todo)
-            elif selected_category == "incomplete" and todo.get("status") == "incomplete":
-                filtered.append(todo)
-            elif selected_category == "complete" and todo.get("status") == "complete":
-                filtered.append(todo)
+        if selected_year != "All":
+            bills = [bill for bill in bills if bill.get("date", "").endswith(selected_year)]
+
+        if selected_month != "All":
+            filtered = [
+                bill for bill in bills if self.get_month_name_from_date(bill.get("date")) == selected_month
+            ]
+        else:
+            filtered = bills
 
         return filtered
 
+    def get_month_name_from_date(self, date_string):
+        """Extract the month name from a date string (dd/mm/yyyy)."""
+        try:
+            date_obj = datetime.strptime(date_string, "%d/%m/%Y")
+            return date_obj.strftime("%B")
+        except ValueError:
+            return ""
+
     def apply_styles(self):
         """Applies enhanced custom styles to widgets with dynamic width."""
-        self.category_combo.setStyleSheet("""
+        self.year_combo.setStyleSheet("""
+                    QComboBox {
+                        font-size: 16px;
+                        padding: 8px 12px;
+                        background-color: #ffffff;
+                        border: 2px solid #e1e4e8;
+                        border-radius: 6px;
+                        color: #2c3e50;
+                        selection-background-color: #3498db;
+                    }
+
+                    QComboBox:hover {
+                        border-color: #3498db;
+                        transition: border-color 0.3s ease;
+                    }
+                """)
+
+        self.month_combo.setStyleSheet("""
             QComboBox {
                 font-size: 16px;
                 padding: 8px 12px;
