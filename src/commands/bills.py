@@ -12,7 +12,7 @@ def list_bills():
 
     print("\nList of bills:")
     for bill in bills:
-        print(f"id: {bill['id']} / description: {bill['description']} / price: {bill['price']}")
+        print(f"id: {bill['id']} / description: {bill['description']} / price: {bill['price']} / date: {bill['date']}")
 
 
 def make_bill(description, price, date):
