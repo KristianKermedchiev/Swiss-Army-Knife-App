@@ -1,5 +1,5 @@
 import shlex
-from src.commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status, delete_book
+from commands.books import list_books, make_book, change_book, add_rating, add_progress, change_status, delete_book
 
 def lsbooks(arg):
     list_books()

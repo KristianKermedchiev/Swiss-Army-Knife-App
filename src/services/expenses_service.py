@@ -1,5 +1,5 @@
 import shlex
-from src.commands.expenses import make_expense, list_expenses, change_expense, delete_expense, expense_log
+from commands.expenses import make_expense, list_expenses, change_expense, delete_expense, expense_log
 
 def lsexpense(arg):
     list_expenses()

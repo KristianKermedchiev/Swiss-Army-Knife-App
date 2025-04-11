@@ -1,5 +1,5 @@
 import shlex
-from src.commands.habits import make_habit, list_habits, change_habit, delete_habit, habit_log, mark_habit
+from commands.habits import make_habit, list_habits, change_habit, delete_habit, habit_log, mark_habit
 
 def lshabits(arg):
     try:

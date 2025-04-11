@@ -1,7 +1,7 @@
-from src.gui_tabs.base_tab import BaseTab
+from gui_tabs.base_tab import BaseTab
 from PyQt5.QtWidgets import QDialog, QComboBox, QVBoxLayout, QPushButton, QTableWidget, QTableWidgetItem, QHeaderView, QHBoxLayout, QWidget, QSizePolicy
-from src.db.db_interface import load_data
-from src.utils.file_utils import get_data_file_path
+from db.db_interface import load_data
+from utils.file_utils import get_data_file_path
 
 STUDIES_DATA_FILE = get_data_file_path('studies.json')
 

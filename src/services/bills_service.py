@@ -1,5 +1,5 @@
 import shlex
-from src.commands.bills import make_bill, list_bills, change_bill, delete_bill
+from commands.bills import make_bill, list_bills, change_bill, delete_bill
 
 def lsbills(arg):
     list_bills()
@@ -21,9 +21,9 @@ def mkbill(arg):
         if description and price and date:
             make_bill(description, price, date)
         else:
-            print("Error: -description, -price and -date are required.")
+            print("Error: -description, -price are required.")
     except (ValueError, IndexError) as e:
-        print("Error: Invalid arguments. Usage: mkbill -description <description> -price <price> -date <date>")
+        print("Error: Invalid arguments. Usage: mkbill -description <description> -price <price> [-date <date>]")
 
 def chbill(arg):
     try:

@@ -89,7 +89,7 @@ class TodoAppCLI(cmd.Cmd):
     def do_mkbill(self, arg):
         """
         Create a new bill.
-        Usage: mkbill -description <description> -price <price> -date <date> (format dd/mm/yyyy)
+        Usage: mkbill -description <description> -price <price> [-date <date>] (format dd/mm/yyyy)
         """
         mkbill(arg)
 

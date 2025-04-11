@@ -1,5 +1,6 @@
-from src.utils.file_utils import get_data_file_path
-from src.db.db_interface import load_data, save_data
+import datetime
+from utils.file_utils import get_data_file_path
+from db.db_interface import load_data, save_data
 
 BILL_DATA_FILE = get_data_file_path('bills.json')
 
@@ -26,8 +27,7 @@ def make_bill(description, price, date):
         return
 
     if date is None:
-        print("Error: Date is required.")
-        return
+        date = datetime.datetime.now().strftime('%d/%m/%Y')
 
     bills = load_data(BILL_DATA_FILE)
 
@@ -41,7 +41,7 @@ def make_bill(description, price, date):
     })
 
     save_data(BILL_DATA_FILE, bills)
-    print(f"Bill '{description}' added successfully with ID {new_id}.")
+    print(f"Bill '{description}' with price {price} added successfully with ID {new_id}.")
 
 
 def change_bill(bill_id, description=None, price=None, date=None):

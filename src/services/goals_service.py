@@ -1,5 +1,5 @@
 import shlex
-from src.commands.goals import list_goals, delete_goal, archive_goal, add_goal_progress, change_goal, make_goal
+from commands.goals import list_goals, delete_goal, archive_goal, add_goal_progress, change_goal, make_goal
 
 def lsgoals():
     list_goals()

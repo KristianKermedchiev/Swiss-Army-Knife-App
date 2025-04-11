@@ -1,7 +1,7 @@
 import datetime
 import pandas as pd
-from src.utils.file_utils import get_data_file_path
-from src.db.db_interface import load_data, save_data
+from utils.file_utils import get_data_file_path
+from db.db_interface import load_data, save_data
 
 EXPENSES_DATA_FILE = get_data_file_path('expenses.json')
 

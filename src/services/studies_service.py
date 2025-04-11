@@ -1,5 +1,5 @@
 import shlex
-from src.commands.studies import list_studies, delete_study, make_study, change_study, log_study, mark_study_completed
+from commands.studies import list_studies, delete_study, make_study, change_study, log_study, mark_study_completed
 
 def lsstudies(arg):
     try:

@@ -1,5 +1,5 @@
-from src.utils.file_utils import get_data_file_path
-from src.db.db_interface import load_data, save_data
+from utils.file_utils import get_data_file_path
+from db.db_interface import load_data, save_data
 
 BOOKS_DATA_FILE = get_data_file_path('books.json')
 

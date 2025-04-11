@@ -1,5 +1,5 @@
 import shlex
-from src.commands.todos import make_todo, list_todos, change_todo, delete_todo
+from commands.todos import make_todo, list_todos, change_todo, delete_todo
 
 def lstodos(arg):
     list_todos()

@@ -1,9 +1,9 @@
-from src.gui_tabs.base_tab import BaseTab
+from gui_tabs.base_tab import BaseTab
 from PyQt5.QtWidgets import QComboBox, QDialog, QVBoxLayout, QTableWidget, QTableWidgetItem, QHeaderView, QHBoxLayout, \
     QWidget, QSizePolicy
-from src.commands.habits import HABITS_DATA_FILE
-from src.db.db_interface import load_data
-from src.utils.file_utils import get_data_file_path
+from commands.habits import HABITS_DATA_FILE
+from db.db_interface import load_data
+from utils.file_utils import get_data_file_path
 from datetime import datetime
 
 HABITS_DATA_FILE = get_data_file_path('habits.json')
