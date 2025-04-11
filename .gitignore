@@ -12,3 +12,5 @@ src/todo.md
 /src/dist
 .json
 .spec
+src/GUI_window.spec
+src/cli.spec
